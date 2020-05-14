@@ -2,7 +2,8 @@
 BUILD=./scripts/docker-build-local.sh
 PREFIX=Game
 SERVICE=$PREFIX.Services
-REPOSITORIES=($PREFIX.Api $SERVICE.Messaging $SERVICE.EventProcessor )
+
+REPOSITORIES=($PREFIX.APIGateway $SERVICE.Messaging $SERVICE.EventProcessor)
 
 for REPOSITORY in ${REPOSITORIES[*]}
 do

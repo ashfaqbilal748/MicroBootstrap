@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/Game.APIGateway/src/Game.API/Game.API.csproj",
+                "${workspaceFolder}/Game.sln",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -25,18 +25,51 @@
             ],
             "problemMatcher": "$msCompile"
         },
+        // https://docs.microsoft.com/en-us/aspnet/core/tutorials/dotnet-watch?view=aspnetcore-3.1
         {
             "label": "watch",
             "command": "dotnet",
+
             "type": "process",
             "args": [
                 "watch",
+                "--project",
+                "${workspaceFolder}/Game.APIGateway/src/Game.API",
                 "run",
-                "${workspaceFolder}/Game.APIGateway/src/Game.API/Game.API.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile",
+            "dependsOn":["watch-event-processor","watch-messaging"]
+        },
+        {
+            "label": "watch-event-processor",
+            "command": "dotnet",
+
+            "type": "process",
+            "args": [
+                "watch",
+                "--project",
+                "${workspaceFolder}/Game.Services.EventProcessor/src/Game.Services.EventProcessor.API",
+                "run",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile"
-        }
+        },
+        {
+            "label": "watch-messaging",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "watch",
+                "--project",
+                "${workspaceFolder}/Game.Services.Messaging/src/Game.Services.Messaging.API",
+                "run",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
     ]
 }

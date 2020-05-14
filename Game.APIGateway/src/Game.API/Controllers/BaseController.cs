@@ -29,7 +29,7 @@ namespace Game.API.Controllers
             _tracer = tracer;
         }
 
-        protected IActionResult Single<T>(T model, Func<T, bool> criteria = null)
+        protected ActionResult Single<T>(T model, Func<T, bool> criteria = null)
         {
             if (model == null)
             {
@@ -59,7 +59,7 @@ namespace Game.API.Controllers
             return NotFound();
         }
 
-        protected IActionResult Collection<T>(PagedResult<T> pagedResult, Func<PagedResult<T>, bool> criteria = null)
+        protected ActionResult Collection<T>(PagedResult<T> pagedResult, Func<PagedResult<T>, bool> criteria = null)
         {
             if (pagedResult == null)
             {
@@ -89,7 +89,7 @@ namespace Game.API.Controllers
             return Accepted(context);
         }
 
-        protected IActionResult Accepted(ICorrelationContext context)
+        protected ActionResult Accepted(ICorrelationContext context)
         {
             Response.Headers.Add(OperationHeader, $"operations/{context.Id}");
             if (!string.IsNullOrWhiteSpace(context.Resource))

@@ -15,11 +15,12 @@
             "name": "Game.APIGateway",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "watch",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/Game.APIGateway/src/Game.API/bin/Debug/netcoreapp3.1/Game.API.dll",
             "args": [],
             "cwd": "${workspaceFolder}/Game.APIGateway/src/Game.API",
+            "console": "externalTerminal",
             "stopAtEntry": false,
             // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
             // "serverReadyAction": {
@@ -34,12 +35,13 @@
             "name": "Game.Services.EventProcessor",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "watch",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/Game.Services.EventProcessor/src/Game.Services.EventProcessor.API/bin/Debug/netcoreapp3.1/Game.Services.EventProcessor.API.dll",
             "args": [],
             "cwd": "${workspaceFolder}/Game.Services.EventProcessor/src/Game.Services.EventProcessor.API",
             "stopAtEntry": false,
+            "console": "externalTerminal",
             // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
             // "serverReadyAction": {
             //     "action": "openExternally",
@@ -53,12 +55,13 @@
             "name": "Game.Services.Messaging",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "watch",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/Game.Services.Messaging/src/Game.Services.Messaging.API/bin/Debug/netcoreapp3.1/Game.Services.Messaging.API.dll",
             "args": [],
             "cwd": "${workspaceFolder}/Game.Services.Messaging/src/Game.Services.Messaging.API",
             "stopAtEntry": false,
+            "console": "externalTerminal",
             // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
             // "serverReadyAction": {
             //     "action": "openExternally",

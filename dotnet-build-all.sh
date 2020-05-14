@@ -1,9 +1,10 @@
 #!/bin/bash
 export ASPNETCORE_ENVIRONMENT=docker
-BUILD=./scripts/dotnet-build.sh
+BUILD=./scripts/build.sh
 PREFIX=Game
 SERVICE=$PREFIX.Services
-REPOSITORIES=($PREFIX.Api $SERVICE.Messaging $SERVICE.EventProcessor )
+
+REPOSITORIES=($PREFIX.APIGateway $SERVICE.Messaging $SERVICE.EventProcessor)
 
 for REPOSITORY in ${REPOSITORIES[*]}
 do

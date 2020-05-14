@@ -1,9 +1,9 @@
 #!/bin/bash
 export ASPNETCORE_ENVIRONMENT=local
-DOTNET_RUN=./scripts/dotnet-run.sh
+DOTNET_RUN=./scripts/start.sh
 PREFIX=Game
 SERVICE=$PREFIX.Services
-REPOSITORIES=($PREFIX.Api $SERVICE.Messaging $SERVICE.EventProcessor)
+REPOSITORIES=($PREFIX.APIGateway $SERVICE.Messaging $SERVICE.EventProcessor)
 
 for REPOSITORY in ${REPOSITORIES[*]}
 do
@@ -14,3 +14,5 @@ do
      $DOTNET_RUN &
      cd ..
 done
+
+trap 'sleep infinity' EXIT

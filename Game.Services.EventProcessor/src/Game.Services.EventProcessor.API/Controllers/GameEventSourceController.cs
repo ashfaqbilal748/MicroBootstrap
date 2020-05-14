@@ -9,9 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Game.Services.EventProcessor.API.Controllers
 {
-    public class GameEventSourceController : BaseController
+    public class GameEventSourcesController : BaseController
     {
-        public GameEventSourceController(IDispatcher dispatcher) : base(dispatcher)
+        public GameEventSourcesController(IDispatcher dispatcher) : base(dispatcher)
         {
         }
 

@@ -1,13 +1,13 @@
 apps:
-  - name: Api
+  - name: API
     script: dotnet run
     cwd: ../Game.APIGateway/src/Game.APIGateway
     max_restarts: 3
   - name: EventProcessor
     script: dotnet run
-    cwd: ../Game.Services.EventProcessor/src/Game.Services.EventProcessor.Api
+    cwd: ../Game.Services.EventProcessor/src/Game.Services.EventProcessor.API
     max_restarts: 3
   - name: Messaging
     script: dotnet run
-    cwd: ../Game.Services.Messaging/src/Game.Services.Messaging.Api
+    cwd: ../Game.Services.Messaging/src/Game.Services.Messaging.API
     max_restarts: 3
