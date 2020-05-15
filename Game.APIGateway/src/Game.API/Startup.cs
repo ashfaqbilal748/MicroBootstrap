@@ -60,12 +60,6 @@ namespace Game.API
                         .WithExposedHeaders(Headers));
             });
             //RestEase Register Services
-            // services.RegisterServiceForwarder<IOperationsService>("operations-service");
-            // services.RegisterServiceForwarder<ICustomersService>("customers-service");
-            // services.RegisterServiceForwarder<IOrdersService>("orders-service");
-            // services.RegisterServiceForwarder<IProductsService>("products-service");
-            // services.RegisterServiceForwarder<IDiscountsService>("discounts-service");
-
         }
 
 

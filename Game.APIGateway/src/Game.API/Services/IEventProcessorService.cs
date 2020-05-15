@@ -7,7 +7,7 @@ using RestEase;
 
 namespace Game.API.Services
 {
-    //API Gateway connect to internal restease and its config for load balancing and choose type of forwarding
+    //API Gateway connect to internal RestEase and its config for load balancing and choose type of forwarding
     //request to internal services
     [SerializationMethods(Query = QuerySerializationMethod.Serialized)]
     public interface IEventProcessorService

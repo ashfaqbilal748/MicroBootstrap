@@ -46,7 +46,8 @@ namespace Game.Services.EventProcessor.API
             services.AddOpenTracing();
 
             services.AddInitializers(typeof(IMongoDbInitializer));
-            // services.RegisterServiceForwarder<IOrdersService>("orders-service");
+            //RestEase Services
+            
         }
 
         // ConfigureContainer is where you can register things directly

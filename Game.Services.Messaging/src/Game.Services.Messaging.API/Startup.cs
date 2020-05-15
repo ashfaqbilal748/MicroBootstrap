@@ -55,7 +55,8 @@ namespace Game.Services.Messaging.API
             });
             AddSignalR(services);
             services.AddInitializers(typeof(IMongoDbInitializer));
-            // services.RegisterServiceForwarder<IOrdersService>("orders-service");
+            //RestEase Services
+
         }
 
         // ConfigureContainer is where you can register things directly
