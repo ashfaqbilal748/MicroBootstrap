@@ -1,0 +1,20 @@
+@apiUrl = http://localhost:5000
+@gameEventSourceId = 1
+
+# ================= API GATEWAY ======================= #
+
+### Get products list
+GET {{apiUrl}}/game-event-sources
+
+### Get product details by updating @productId parameter above
+GET {{apiUrl}}/game-event-sources/{{gameEventSourceId}}
+
+# ### Update a product if needed
+# PUT {{apiUrl}}/products/{{gameEventSourceId}}
+# content-type: application/json
+
+# {
+# }
+
+# ### Delete a product if needed
+# DELETE {{apiUrl}}/products/{{gameEventSourceId}}

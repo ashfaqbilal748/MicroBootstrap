@@ -16,11 +16,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using RabbitMQ.Client;
 using Common.RestEase;
 using Microsoft.Extensions.Configuration;
 using Autofac.Extensions.DependencyInjection;
 using Game.API.Services;
+using Common.Swagger;
+using Common;
+using Consul;
 
 namespace Game.API
 {
@@ -42,9 +44,8 @@ namespace Game.API
             //This is called after ConfigureContainer. You can use IApplicationBuilder.ApplicationServices
             // here if you need to resolve things from the container.
             //this.AutofacContainer = app.ApplicationServices.GetAutofacRoot();
-
             services.AddWebApi();
-            services.AddSwaggerGen();
+            services.AddSwaggerDocs();
             services.AddConsul();
             services.AddJwt();
             services.AddJaeger();
@@ -60,6 +61,8 @@ namespace Game.API
                         .AllowCredentials()
                         .WithExposedHeaders(Headers));
             });
+            services.AddInitializers();
+
             //RestEase Register Services
             services.RegisterServiceForwarder<IGameEventProcessorService>("game-event-processor-service");
         }
@@ -78,7 +81,8 @@ namespace Game.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime applicationLifetime)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
+        IHostApplicationLifetime applicationLifetime, IConsulClient client)
         {
             // If, for some reason, you need a reference to the built container, you
             // can use the convenience extension method GetAutofacRoot.
@@ -87,19 +91,28 @@ namespace Game.API
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseStaticFiles();
+            app.UseSwaggerDocs();
 
+            app.UseInitializers();
             app.UseRouting();
-
+            app.UseErrorHandler();
+            app.UseAuthorization();
+            app.UseAccessTokenValidator();
+            app.UseServiceId();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapDefaultControllerRoute();
                 endpoints.MapGet("/", async context =>
-                          {
-                              await context.Response.WriteAsync("Game APIGateway");
-                          });
+                           {
+                               await context.Response.WriteAsync("Game APIGateway");
+                           });
             });
-
+            app.UseRabbitMq();
+            var consulServiceId = app.UseConsul();
             applicationLifetime.ApplicationStopped.Register(() =>
             {
+                client.Agent.ServiceDeregister(consulServiceId);
                 AutofacContainer.Dispose();
             });
         }

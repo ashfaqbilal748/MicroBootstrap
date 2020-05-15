@@ -47,7 +47,7 @@ namespace Game.Services.EventProcessor.API
 
             services.AddInitializers(typeof(IMongoDbInitializer));
             //RestEase Services
-            
+
         }
 
         // ConfigureContainer is where you can register things directly
@@ -77,16 +77,17 @@ namespace Game.Services.EventProcessor.API
             }
             app.UseInitializers();
             app.UseRouting();
-            //app.UseAuthorization();
-       
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapDefaultControllerRoute();
                 endpoints.MapGet("/", async context =>
                 {
                     await context.Response.WriteAsync("Game Event Processor Service");
                 });
             });
-            
+
             app.UseAllForwardedHeaders();
             app.UseSwaggerDocs();
             app.UseErrorHandler();

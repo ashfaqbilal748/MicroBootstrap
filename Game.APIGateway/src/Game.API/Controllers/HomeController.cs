@@ -14,6 +14,9 @@ namespace Game.API.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Get() => Ok("Game API");
+        public IActionResult Get()
+        {
+            return Ok("Game API");
+        }
     }
 }

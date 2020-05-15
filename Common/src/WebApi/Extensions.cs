@@ -46,16 +46,10 @@ namespace Common.WebApi
             Converters = { new StringEnumConverter(true) }
         };
 
-        public static IApplicationBuilder UseEndpoints(this IApplicationBuilder app, Action<IEndpointsBuilder> build,
-            bool useAuthorization = true, Action<IApplicationBuilder> middleware = null)
+        public static IApplicationBuilder UseApiEndpoints(this IApplicationBuilder app, Action<IEndpointsBuilder> build,
+             Action<IApplicationBuilder> middleware = null)
         {
             var definitions = app.ApplicationServices.GetRequiredService<WebApiEndpointDefinitions>();
-            app.UseRouting();
-            if (useAuthorization)
-            {
-                app.UseAuthorization();
-            }
-
             middleware?.Invoke(app);
 
             app.UseEndpoints(router => build(new EndpointsBuilder(router, definitions)));
@@ -147,7 +141,7 @@ namespace Common.WebApi
                           await ctx.Response.WriteAsync(id);
                       }
                   }));
-                  
+
         public static IApplicationBuilder UseAllForwardedHeaders(this IApplicationBuilder builder)
             => builder.UseForwardedHeaders(new ForwardedHeadersOptions
             {
