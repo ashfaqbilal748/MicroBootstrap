@@ -20,6 +20,7 @@ using RabbitMQ.Client;
 using Common.RestEase;
 using Microsoft.Extensions.Configuration;
 using Autofac.Extensions.DependencyInjection;
+using Game.API.Services;
 
 namespace Game.API
 {
@@ -60,6 +61,7 @@ namespace Game.API
                         .WithExposedHeaders(Headers));
             });
             //RestEase Register Services
+            services.RegisterServiceForwarder<IGameEventProcessorService>("game-event-processor-service");
         }
 
 

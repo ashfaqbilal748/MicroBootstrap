@@ -16,24 +16,24 @@ namespace Game.API.Controllers
     [Route("game-event-sources")]
     public class GameEventSourcesController : BaseController
     {
-        private readonly IEventProcessorService _eventProcessorService;
+        private readonly IGameEventProcessorService _gameEventProcessorService;
 
         public GameEventSourcesController(IBusPublisher busPublisher, ITracer tracer,
-         IEventProcessorService eventProcessorService) : base(busPublisher, tracer)
+         IGameEventProcessorService eventProcessorService) : base(busPublisher, tracer)
         {
-            this._eventProcessorService = eventProcessorService;
+            this._gameEventProcessorService = eventProcessorService;
         }
 
         [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult<PagedResult<GameEventSourceDto>>> Get([FromQuery] BrowseGameEventSource query)
-            => Collection(await _eventProcessorService.BrowseAsync(query));
+            => Collection(await _gameEventProcessorService.BrowseAsync(query));
 
 
         [HttpGet("{id}")]
         [AllowAnonymous]
         public async Task<ActionResult<GameEventSourceDto>> Get(Guid id)
-            => Single(await _eventProcessorService.GetAsync(id));
+            => Single(await _gameEventProcessorService.GetAsync(id));
 
         [HttpPost]
         public async Task<IActionResult> Post(AddGameEventSource command)

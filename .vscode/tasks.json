@@ -27,20 +27,18 @@
         },
         // https://docs.microsoft.com/en-us/aspnet/core/tutorials/dotnet-watch?view=aspnetcore-3.1
         {
-            "label": "watch",
+            "label": "watch-api-gateway",
             "command": "dotnet",
-
             "type": "process",
             "args": [
                 "watch",
                 "--project",
                 "${workspaceFolder}/Game.APIGateway/src/Game.API",
-                "run",
+                "build",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile",
-            "dependsOn":["watch-event-processor","watch-messaging"]
         },
         {
             "label": "watch-event-processor",
@@ -51,7 +49,7 @@
                 "watch",
                 "--project",
                 "${workspaceFolder}/Game.Services.EventProcessor/src/Game.Services.EventProcessor.API",
-                "run",
+                "build",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -65,7 +63,7 @@
                 "watch",
                 "--project",
                 "${workspaceFolder}/Game.Services.Messaging/src/Game.Services.Messaging.API",
-                "run",
+                "build",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],

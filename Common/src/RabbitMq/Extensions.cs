@@ -86,9 +86,9 @@ namespace Common.RabbitMq
                         .UseJaeger(tracer)
                 });
             }).SingleInstance();
-            builder.Register(context => context.Resolve<IInstanceFactory>().Create());
+            var busClient = builder.Register(context => context.Resolve<IInstanceFactory>().Create());
         }
-      
+
         private class CustomNamingConventions : NamingConventions
         {
             //defaultName space read fron rabbitmq custom property namespace
@@ -111,7 +111,7 @@ namespace Common.RabbitMq
 
                 return string.IsNullOrWhiteSpace(@namespace) ? string.Empty : $"{@namespace}.";
             }
-            
+
             private static string GetNamespace(Type type, string defaultNamespace)
             {
                 var @namespace = type.GetCustomAttribute<MessageNamespaceAttribute>()?.Namespace ?? defaultNamespace;
