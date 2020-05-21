@@ -1,11 +1,17 @@
+
+using Common.Dispatchers;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Game.Services.Messaging.API
+namespace Game.Services.Messaging.API.Controller
 {
     [Route("")]
-    public class HomeController : ControllerBase
+    public class HomeController : BaseController
     {
-        [HttpGet]
-        public IActionResult Get() => Ok("Game Messaging-SignalR Service");
+        public HomeController(IDispatcher dispatcher) : base(dispatcher)
+        {
+        }
+
+        [HttpGet("ping")]
+        public IActionResult Ping() => Ok();
     }
 }

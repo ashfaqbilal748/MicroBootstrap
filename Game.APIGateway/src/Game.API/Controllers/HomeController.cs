@@ -1,5 +1,4 @@
 using Common.RabbitMq;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OpenTracing;
 
@@ -11,12 +10,8 @@ namespace Game.API.Controllers
         public HomeController(IBusPublisher busPublisher, ITracer tracer) : base(busPublisher, tracer)
         {
         }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult Get()
-        {
-            return Ok("Game API");
-        }
+        
+        [HttpGet("ping")]
+        public IActionResult Ping() => Ok();
     }
 }

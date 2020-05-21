@@ -38,6 +38,7 @@ namespace Game.Services.EventProcessor.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddWebApi();
+            services.AddHealthChecks();
             services.AddSwaggerDocs();
             services.AddConsul();
             services.AddRedis();
@@ -83,9 +84,8 @@ namespace Game.Services.EventProcessor.API
             {
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Game Event Processor Service");
-                });
+                         await context.Response.WriteAsync(context.RequestServices.GetService<AppOptions>().Name));
+                endpoints.MapHealthChecks("/healthz");
             });
 
             app.UseAllForwardedHeaders();

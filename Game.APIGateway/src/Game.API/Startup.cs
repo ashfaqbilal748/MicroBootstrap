@@ -45,6 +45,7 @@ namespace Game.API
             // here if you need to resolve things from the container.
             //this.AutofacContainer = app.ApplicationServices.GetAutofacRoot();
             services.AddWebApi();
+            services.AddHealthChecks();
             services.AddSwaggerDocs();
             services.AddConsul();
             services.AddJwt();
@@ -103,11 +104,11 @@ namespace Game.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
+                endpoints.MapHealthChecks("/healthz");
                 endpoints.MapGet("/", async context =>
-                           {
-                               await context.Response.WriteAsync("Game APIGateway");
-                           });
-            });
+                     await context.Response.WriteAsync(context.RequestServices.GetService<AppOptions>().Name));
+            }
+        );
             app.UseRabbitMq();
             var consulServiceId = app.UseConsul();
             applicationLifetime.ApplicationStopped.Register(() =>

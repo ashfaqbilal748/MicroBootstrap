@@ -33,8 +33,9 @@ namespace Common.WebApi
     public static class Extensions
     {
         private static readonly byte[] InvalidJsonRequestBytes = Encoding.UTF8.GetBytes("An invalid JSON was sent.");
-        private const string SectionName = "webApi";
-        private const string RegistryName = "webApi";
+        private const string WebApiSectionName = "WebApi";
+        private const string AppsectionName = "App";
+        private const string RegistryName = "WebApi";
         private const string EmptyJsonObject = "{}";
         private const string LocationHeader = "Location";
         private const string JsonContentType = "application/json";
@@ -59,14 +60,24 @@ namespace Common.WebApi
 
         [Description("By default Newtonsoft JSON serializer is being used and it sets Kestrel's and IIS ServerOptions AllowSynchronousIO = true")]
         public static void AddWebApi(this IServiceCollection serviceCollection, Action<IMvcCoreBuilder> configureMvc = null,
-            IJsonSerializer jsonSerializer = null, string sectionName = SectionName)
+            IJsonSerializer jsonSerializer = null, string webApiSectionName = WebApiSectionName, string appSectionName = AppsectionName)
         {
             serviceCollection.AddSingleton<IServiceId, ServiceId>();
             serviceCollection.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            if (string.IsNullOrWhiteSpace(sectionName))
+            if (string.IsNullOrWhiteSpace(appSectionName))
             {
-                sectionName = SectionName;
+                appSectionName = AppsectionName;
+            }
+
+            var options = serviceCollection.GetOptions<AppOptions>(appSectionName);
+            serviceCollection.AddMemoryCache();
+            serviceCollection.AddSingleton(options);
+
+            if (options.DisplayBanner && string.IsNullOrWhiteSpace(options.Name) == false)
+            {
+                var version = options.DisplayVersion ? $" {options.Version}" : string.Empty;
+                Console.WriteLine(Figgle.FiggleFonts.Doom.Render($"{options.Name}{version}"));
             }
 
             if (jsonSerializer is null)
@@ -88,9 +99,9 @@ namespace Common.WebApi
             serviceCollection.AddSingleton(jsonSerializer);
             serviceCollection.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             serviceCollection.AddSingleton(new WebApiEndpointDefinitions());
-            var options = serviceCollection.GetOptions<WebApiOptions>(sectionName);
+            var webApiOptions = serviceCollection.GetOptions<WebApiOptions>(webApiSectionName);
             serviceCollection.AddSingleton(options);
-            _bindRequestFromRoute = options.BindRequestFromRoute;
+            _bindRequestFromRoute = webApiOptions.BindRequestFromRoute;
 
             var mvcCoreBuilder = serviceCollection
                 .AddLogging()

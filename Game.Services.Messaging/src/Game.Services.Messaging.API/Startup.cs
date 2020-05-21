@@ -38,6 +38,7 @@ namespace Game.Services.Messaging.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddWebApi();
+            services.AddHealthChecks();
             services.AddSwaggerDocs();
             services.AddConsul();
             services.AddJaeger();
@@ -101,13 +102,12 @@ namespace Game.Services.Messaging.API
             app.UseInitializers();
             app.UseRouting();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapDefaultControllerRoute();
                 endpoints.MapGet("/", async context =>
-                            {
-                                await context.Response.WriteAsync("Game Messaging Service");
-                            });
+                                     await context.Response.WriteAsync(context.RequestServices.GetService<AppOptions>().Name));
+                endpoints.MapHealthChecks("/healthz");
                 endpoints.MapHub<GameHub>("/gameHub");
             });
             app.UseAllForwardedHeaders();

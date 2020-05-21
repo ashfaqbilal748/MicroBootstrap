@@ -9,21 +9,22 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Game.Services.EventProcessor.API.Controllers
 {
+    [Route("game-event-sources")]
     public class GameEventSourcesController : BaseController
     {
         public GameEventSourcesController(IDispatcher dispatcher) : base(dispatcher)
         {
         }
 
-        [HttpGet("game-event-sources")]
+        [HttpGet]
         public async Task<ActionResult<PagedResult<GameEventSourceDto>>> Get([FromQuery] BrowseGameEventSource query)
             => Collection(await QueryAsync(query));
 
-        [HttpGet("game-event-sources/{id}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<GameEventSourceDto>> Get([FromRoute] GetGameEventSource query)
             => Single(await QueryAsync(query));
         
-        [HttpPost("game-event-sources")]
+        [HttpPost]
         public async Task<ActionResult> Post(AddGameEventSource command)
         {
             await SendAsync(command.BindId(c => c.Id));

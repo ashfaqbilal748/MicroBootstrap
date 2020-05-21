@@ -1,5 +1,5 @@
 @apiUrl = http://localhost:5000
-@gameEventSourceId = 1
+@gameEventSourceId = d04ec35e-9e7e-4033-9fa6-76679671d1b3
 
 # ================= API GATEWAY ======================= #
 
