@@ -5,7 +5,7 @@ using MicroBootstrap.Queries;
 using MicroBootstrap.Queries.Dispatchers;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Game.Services.Messaging.API.Controller
+namespace Game.Services.EventProcessor.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]

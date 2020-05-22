@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="OpenTracing.Contrib.NetCore" Version="0.6.2" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.1.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\src\MicroBootstrap.csproj" />
+    <ProjectReference Include="..\Game.Services.EventProcessor.Core\Game.Services.EventProcessor.Core.csproj" />
+    <ProjectReference Include="..\Game.Services.EventProcessor.Application\Game.Services.EventProcessor.Application.csproj" />
+  </ItemGroup>
+</Project>
