@@ -17,9 +17,9 @@
             "request": "launch",
             // "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Game.APIGateway/src/Game.API/bin/Debug/netcoreapp3.1/Game.API.dll",
+            "program": "${workspaceFolder}/samples/Game-Microservices-Sample/Game.APIGateway/src/Game.API/bin/Debug/netcoreapp3.1/Game.API.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/Game.APIGateway/src/Game.API",
+            "cwd": "${workspaceFolder}/samples/Game-Microservices-Sample/Game.APIGateway/src/Game.API",
             "console": "externalTerminal",
             "stopAtEntry": false,
             // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
@@ -37,9 +37,9 @@
             "request": "launch",
             // "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Game.Services.EventProcessor/src/Game.Services.EventProcessor.API/bin/Debug/netcoreapp3.1/Game.Services.EventProcessor.API.dll",
+            "program": "${workspaceFolder}/samples/Game-Microservices-Sample/Game.Services.EventProcessor/src/Game.Services.EventProcessor.API/bin/Debug/netcoreapp3.1/Game.Services.EventProcessor.API.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/Game.Services.EventProcessor/src/Game.Services.EventProcessor.API",
+            "cwd": "${workspaceFolder}/samples/Game-Microservices-Sample/Game.Services.EventProcessor/src/Game.Services.EventProcessor.API",
             "stopAtEntry": false,
             "console": "externalTerminal",
             // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser

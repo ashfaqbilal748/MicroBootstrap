@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel;
 using App.Metrics;
 using App.Metrics.AspNetCore;
 using App.Metrics.AspNetCore.Endpoints;
@@ -7,7 +6,6 @@ using App.Metrics.AspNetCore.Health.Endpoints;
 using App.Metrics.AspNetCore.Tracking;
 using App.Metrics.Formatters.Prometheus;
 using MicroBootstrap.Metrics;
-using MicroBootstrap.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -18,12 +16,12 @@ namespace MicroBootstrap.Metrics
 {
     public static class Extensions
     {
-         private static bool _initialized;
+        private static bool _initialized;
         private const string MetricsSectionName = "metrics";
         private const string AppSectionName = "app";
         private const string RegistryName = "metrics.metrics";
 
-        public static void AddMetrics(this ServiceCollection serviceCollection,
+        public static IServiceCollection AddAppMetrics(this IServiceCollection serviceCollection,
             string metricsSectionName = MetricsSectionName, string appSectionName = AppSectionName)
         {
             if (string.IsNullOrWhiteSpace(metricsSectionName))
@@ -39,10 +37,10 @@ namespace MicroBootstrap.Metrics
             var metricsOptions = serviceCollection.GetOptions<MetricsOptions>(metricsSectionName);
             var appOptions = serviceCollection.GetOptions<AppOptions>(appSectionName);
 
-            serviceCollection.AddMetrics(metricsOptions, appOptions);
+            return serviceCollection.AddAppMetrics(metricsOptions, appOptions);
         }
 
-        public static void AddMetrics(this IServiceCollection serviceCollection,
+        public static IServiceCollection AddAppMetrics(this IServiceCollection serviceCollection,
             Func<IMetricsOptionsBuilder, IMetricsOptionsBuilder> buildOptions, string appSectionName = AppSectionName)
         {
             if (string.IsNullOrWhiteSpace(appSectionName))
@@ -53,23 +51,23 @@ namespace MicroBootstrap.Metrics
             var metricsOptions = buildOptions(new MetricsOptionsBuilder()).Build();
             var appOptions = serviceCollection.GetOptions<AppOptions>(appSectionName);
 
-            serviceCollection.AddMetrics(metricsOptions, appOptions);
+            return serviceCollection.AddAppMetrics(metricsOptions, appOptions);
         }
 
-        public static void AddMetrics(this IServiceCollection serviceCollection, MetricsOptions metricsOptions,
+        public static IServiceCollection AddAppMetrics(this IServiceCollection serviceCollection, MetricsOptions metricsOptions,
             AppOptions appOptions)
         {
             serviceCollection.AddSingleton(metricsOptions);
             if (!metricsOptions.Enabled || _initialized)
             {
-                return;
+                return serviceCollection;
             }
 
             _initialized = true;
 
             serviceCollection.Configure<KestrelServerOptions>(o => o.AllowSynchronousIO = true);
             serviceCollection.Configure<IISServerOptions>(o => o.AllowSynchronousIO = true);
-            
+
             var metricsBuilder = new MetricsBuilder().Configuration.Configure(cfg =>
             {
                 var tags = metricsOptions.Tags;
@@ -138,6 +136,7 @@ namespace MicroBootstrap.Metrics
                     configuration);
                 serviceCollection.AddMetrics(metrics);
             }
+            return serviceCollection;
         }
 
         private static MetricsWebHostOptions GetMetricsWebHostOptions(MetricsOptions metricsOptions)
@@ -172,7 +171,7 @@ namespace MicroBootstrap.Metrics
             return options;
         }
 
-        public static IApplicationBuilder UseMetrics(this IApplicationBuilder app)
+        public static IApplicationBuilder UseAppMetrics(this IApplicationBuilder app)
         {
             MetricsOptions options;
             using (var scope = app.ApplicationServices.CreateScope())

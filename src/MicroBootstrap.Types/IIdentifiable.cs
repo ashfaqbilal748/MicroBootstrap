@@ -2,8 +2,12 @@ using System;
 
 namespace MicroBootstrap.Types
 {
-    public interface IIdentifiable
+    public interface IIdentifiable<out T>
     {
-         Guid Id { get; }
+        T Id { get; }
     }
+    public interface IIdentifiable : IIdentifiable<Guid>
+    {
+    }
+
 }

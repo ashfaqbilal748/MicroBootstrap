@@ -3,37 +3,60 @@ using MicroBootstrap.Fabio;
 using MicroBootstrap.WebApi;
 using MicroBootstrap.RabbitMq;
 using Microsoft.AspNetCore.Builder;
+using MicroBootstrap.Mongo;
+using MicroBootstrap.Redis;
+using MicroBootstrap.Jaeger;
+using Game.Services.EventProcessor.Core.Entities;
+using System;
+using Game.Services.EventProcessor.Core.Messages.Commands;
+using Game.Services.EventProcessor.Core.Messages.Events;
+using MicroBootstrap;
+using Microsoft.Extensions.Hosting;
+using Consul;
+using MicroBootstrap.Metrics;
 using Microsoft.Extensions.DependencyInjection;
 
-public static IServiceCollection AddInfrastructure(this IServiceCollection serviceCollection)
+public static class Extensions
 {
+    public static IServiceCollection AddInfrastructure(this IServiceCollection serviceCollection)
+    {
+        return serviceCollection
+            .AddHttpClient()
+            .AddConsul()
+            .AddFabio()
+            .AddRabbitMq()
+            .AddMongo()
+            .AddRedis()
+            .AddOpenTracing()
+            .AddJaeger()
+            .AddAppMetrics()
+            .AddMongoRepository<GameEventSource, Guid>("gameEventSources")
+            .AddInitializers(typeof(IMongoDbInitializer));
+    }
 
-    return serviceCollection
-        .AddHttpClient()
-        .AddConsul()
-        .AddFabio()
-        .AddRabbitMq()
-        // .AddMongo()
-        // .AddRedis()
-        // .AddMetrics()
-        // .AddJaeger()
-        // .AddMongoRepository<DeliveryDocument, Guid>("deliveries")
-        // .AddWebApiSwaggerDocs();
-}
+    public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
+    {
+        IHostApplicationLifetime applicationLifetime = app.ApplicationServices.GetService<IHostApplicationLifetime>();
+        IConsulClient client = app.ApplicationServices.GetService<IConsulClient>();
+        IStartupInitializer startupInitializer = app.ApplicationServices.GetService<IStartupInitializer>();
 
-public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
-{
-    app.UseErrorHandler()
-        .UseSwaggerDocs()
-        .UseJaeger()
-        .UseConvey()
-        .UsePublicContracts<ContractAttribute>()
-        .UseMetrics()
-        .UseRabbitMq()
-        .SubscribeCommand<StartDelivery>()
-        .SubscribeCommand<CompleteDelivery>()
-        .SubscribeCommand<FailDelivery>()
-        .SubscribeCommand<AddDeliveryRegistration>();
+        app.UseErrorHandler()
+             .UseJaeger()
+             .UseAppMetrics()
+             .UseRabbitMq()
+                 .SubscribeCommand<AddGameEventSource>(onError: (c, e) =>
+                     new AddGameEventSourceRejected(c.Id, e.Message, e.Code));
+        // .SubscribeCommand<UpdateGameEventSource>(onError: (c, e) =>
+        //     new UpdateGameEventSourceRejected(c.Id, e.Message, e.Code))
+        // .SubscribeCommand<DeleteGameEventSource>(onError: (c, e) =>
+        //     new DeleteGameEventSourceRejected(c.Id, e.Message, e.Code))
 
-    return app;
+
+        var consulServiceId = app.UseConsul();
+        applicationLifetime.ApplicationStopped.Register(() =>
+        {
+            client.Agent.ServiceDeregister(consulServiceId);
+        });
+        return app;
+    }
 }

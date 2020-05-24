@@ -47,6 +47,7 @@ namespace Game.API
             services.AddJaeger();
             services.AddOpenTracing();
             services.AddRedis();
+            services.AddRabbitMq();
             // services.AddAuthorization(x => x.AddPolicy("admin", p => p.RequireRole("admin")));
             services.AddCors(options =>
             {
@@ -70,9 +71,7 @@ namespace Game.API
         // Don't build the container; that gets done for you by the factory.
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            // Register your own things directly with Autofac, like:
-            builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly()).AsImplementedInterfaces();
-            builder.AddRabbitMq();
+            // Register your own things directly with Autofac
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

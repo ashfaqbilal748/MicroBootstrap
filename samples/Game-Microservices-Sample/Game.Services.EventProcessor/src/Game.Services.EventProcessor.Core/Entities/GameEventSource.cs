@@ -2,9 +2,9 @@ using System;
 using MicroBootstrap.Types;
 namespace Game.Services.EventProcessor.Core.Entities
 {
-    public class GameEventSource : IIdentifiable
+    public class GameEventSource : IIdentifiable<Guid>
     {
-        public Guid Id { get; private set; }
+        public Guid Id { get; set; }
         public bool IsWin { get; set; }
         public int Score { get; set; }
 

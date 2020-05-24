@@ -5,19 +5,18 @@ namespace MicroBootstrap.Redis
 {
     public static class Extensions
     {
-        private static readonly string SectionName = "redis";
-        
-        public static IServiceCollection AddRedis(this IServiceCollection services)
-        {
-            IConfiguration configuration;
-            using (var serviceProvider = services.BuildServiceProvider())
-            {
-                configuration = serviceProvider.GetService<IConfiguration>();
-            }
+        private const string SectionName = "redis";
 
-            services.Configure<RedisOptions>(configuration.GetSection(SectionName));
-            var options = configuration.GetOptions<RedisOptions>(SectionName);
-            services.AddDistributedRedisCache(o => 
+        public static IServiceCollection AddRedis(this IServiceCollection services, string sectionName = SectionName)
+        {
+             if (string.IsNullOrWhiteSpace(sectionName)) sectionName = SectionName;
+
+             var options = services.GetOptions<RedisOptions>(sectionName);
+            return services.AddRedis(options);
+        }
+        public static IServiceCollection AddRedis(this IServiceCollection services, RedisOptions options)
+        {
+            services.AddStackExchangeRedisCache(o =>
             {
                 o.Configuration = options.ConnectionString;
                 o.InstanceName = options.Instance;

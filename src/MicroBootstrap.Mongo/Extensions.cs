@@ -1,55 +1,65 @@
 using Autofac;
 using MicroBootstrap.Types;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Conventions;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 
 namespace MicroBootstrap.Mongo
 {
     public static class Extensions
     {
-        public static ContainerBuilder AddMongo(this ContainerBuilder builder)
+        private const string SectionName = "mongo";
+        public static IServiceCollection AddMongo(this IServiceCollection serviceCollection, string sectionName = SectionName)
         {
-            builder.Register(context =>
+            if (string.IsNullOrWhiteSpace(sectionName))
             {
-                var configuration = context.Resolve<IConfiguration>();
-                var options = configuration.GetOptions<MongoDbOptions>("mongo");
+                sectionName = SectionName;
+            }
+            var mongoOptions = serviceCollection.GetOptions<MongoDbOptions>(sectionName);
+            serviceCollection.AddSingleton(mongoOptions);
 
-                return options;
-            }).SingleInstance();
-
-            builder.Register(context =>
+            serviceCollection.AddSingleton<IMongoClient>(sp =>
             {
-                var options = context.Resolve<MongoDbOptions>();
+                return new MongoClient(mongoOptions.ConnectionString);
+            });
 
-                return new MongoClient(options.ConnectionString);
-            }).SingleInstance();
-
-            builder.Register(context =>
+            serviceCollection.AddTransient(sp =>
             {
-                var options = context.Resolve<MongoDbOptions>();
-                var client = context.Resolve<MongoClient>();
+                var options = sp.GetService<MongoDbOptions>();
+                var client = sp.GetService<IMongoClient>();
                 return client.GetDatabase(options.Database);
+            });
+            serviceCollection.AddTransient<IMongoDbInitializer, MongoDbInitializer>();
 
-            }).InstancePerLifetimeScope();
+            serviceCollection.AddTransient<IMongoDbSeeder, MongoDbSeeder>();
+            RegisterConventions();
 
-            builder.RegisterType<MongoDbInitializer>()
-                .As<IMongoDbInitializer>()
-                .InstancePerLifetimeScope();
-
-            builder.RegisterType<MongoDbSeeder>()
-                .As<IMongoDbSeeder>()
-                .InstancePerLifetimeScope();
-
-            return builder;
+            return serviceCollection;
         }
-
-        public static ContainerBuilder AddMongoRepository<TEntity>(this ContainerBuilder builder, string collectionName)
-            where TEntity : IIdentifiable
+        private static void RegisterConventions()
         {
-            builder.Register(ctx => new MongoRepository<TEntity>(ctx.Resolve<IMongoDatabase>(), collectionName))
-               .As<IMongoRepository<TEntity>>()
-               .InstancePerLifetimeScope();
-            return builder;
+            BsonSerializer.RegisterSerializer(typeof(decimal), new DecimalSerializer(BsonType.Decimal128));
+            BsonSerializer.RegisterSerializer(typeof(decimal?),
+                new NullableSerializer<decimal>(new DecimalSerializer(BsonType.Decimal128)));
+            ConventionRegistry.Register("convey", new ConventionPack
+            {
+                new CamelCaseElementNameConvention(),
+                new IgnoreExtraElementsConvention(true),
+                new EnumRepresentationConvention(BsonType.String),
+            }, _ => true);
+        }
+        public static IServiceCollection AddMongoRepository<TEntity, TIdentifiable>(this IServiceCollection serviceCollection,
+         string collectionName) where TEntity : IIdentifiable<TIdentifiable>
+        {
+            serviceCollection.AddTransient<IMongoRepository<TEntity, TIdentifiable>>(sp =>
+            {
+                var database = sp.GetService<IMongoDatabase>();
+                return new MongoRepository<TEntity, TIdentifiable>(database, collectionName);
+            });
+            return serviceCollection;
         }
     }
 }

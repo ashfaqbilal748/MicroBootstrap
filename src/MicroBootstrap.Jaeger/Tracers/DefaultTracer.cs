@@ -4,9 +4,9 @@ using Jaeger.Reporters;
 using Jaeger.Samplers;
 using OpenTracing;
 
-namespace MicroBootstrap.Jaeger
+namespace MicroBootstrap.Jaeger.Tracers
 {
-    public class DefaultTracer
+    internal sealed class DefaultTracer
     {
         public static ITracer Create()
             => new Tracer.Builder(Assembly.GetEntryAssembly().FullName)

@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MicroBootstrap.Mongo;
-using MicroBootstrap.Types;
 using Game.Services.EventProcessor.Core.Entities;
 using Game.Services.EventProcessor.Core.Messages.Queries;
 using Game.Services.EventProcessor.Core.Repositories;
@@ -13,9 +11,9 @@ namespace Game.Services.EventProcessor.Infrastructure.Mongo.Repositories
 {
     internal class GameEventSourceMongoRepository : IGameEventSourceRepository
     {
-        private readonly IMongoRepository<GameEventSource> _repository;
+        private readonly IMongoRepository<GameEventSource, Guid> _repository;
 
-        public GameEventSourceMongoRepository(IMongoRepository<GameEventSource> repository)
+        public GameEventSourceMongoRepository(IMongoRepository<GameEventSource, Guid> repository)
             => _repository = repository;
 
         public Task AddAsync(GameEventSource gameEventSource)

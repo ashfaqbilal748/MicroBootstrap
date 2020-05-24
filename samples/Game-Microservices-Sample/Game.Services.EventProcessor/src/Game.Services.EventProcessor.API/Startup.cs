@@ -1,11 +1,6 @@
 using Autofac;
-using MicroBootstrap.Consul;
-using MicroBootstrap.Jaeger;
-using MicroBootstrap.Mongo;
-using MicroBootstrap.RabbitMq;
 using MicroBootstrap.WebApi;
 using MicroBootstrap;
-using Game.Services.EventProcessor.Core.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -13,12 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using MicroBootstrap.Swagger;
 using MicroBootstrap.Authentication;
 using Autofac.Extensions.DependencyInjection;
-using Consul;
 using Microsoft.Extensions.Hosting;
-using Game.Services.EventProcessor.Core.Messages.Commands;
-using MicroBootstrap.Redis;
 using Microsoft.AspNetCore.Http;
-using Game.Services.EventProcessor.Core.Messages.Events;
 using Game.Services.EventProcessor.Application;
 
 namespace Game.Services.EventProcessor.API
@@ -29,6 +20,7 @@ namespace Game.Services.EventProcessor.API
         {
             Configuration = configuration;
         }
+        private static readonly string[] Headers = new[] { "X-Operation", "X-Resource", "X-Total-Count" };
 
         public ILifetimeScope AutofacContainer { get; private set; }
         public IConfiguration Configuration { get; }
@@ -37,18 +29,26 @@ namespace Game.Services.EventProcessor.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddWebApi();
-            services.AddApplication();
             services.AddHealthChecks();
             services.AddSwaggerDocs();
-            services.AddConsul();
-            services.AddRedis();
             services.AddJwt();
-            services.AddJaeger();
-            services.AddOpenTracing();
+            services.AddInfrastructure();
             services.AddApplication();
-            services.AddInitializers(typeof(IMongoDbInitializer));
-            //RestEase Services
 
+            //RestEase Services
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", cors =>
+                    cors.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials()
+                        .WithExposedHeaders(Headers));
+            });
+
+            services.AddInitializers();
+
+            //RestEase Register Services
         }
 
         // ConfigureContainer is where you can register things directly
@@ -57,16 +57,10 @@ namespace Game.Services.EventProcessor.API
         // Don't build the container; that gets done for you by the factory.
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            // Register your own things directly with Autofac, like:
-            builder.RegisterAssemblyTypes(typeof(Startup).Assembly)
-                .AsImplementedInterfaces();
-            builder.AddMongo();
-            builder.AddMongoRepository<GameEventSource>("GameEventSources");
-            builder.AddRabbitMq();
+            // Register your own things directly with Autofac
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
-         IHostApplicationLifetime applicationLifetime, IConsulClient client, IStartupInitializer startupInitializer)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime applicationLifetime)
         {
             // If, for some reason, you need a reference to the built container, you
             // can use the convenience extension method GetAutofacRoot.
@@ -75,9 +69,14 @@ namespace Game.Services.EventProcessor.API
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseInfrastructure();
             app.UseInitializers();
             app.UseRouting();
+            app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseAuthorization();
+            app.UseAccessTokenValidator();
+            app.UseServiceId();
 
             app.UseEndpoints(endpoints =>
             {
@@ -88,25 +87,12 @@ namespace Game.Services.EventProcessor.API
             });
 
             app.UseAllForwardedHeaders();
-            app.UseSwaggerDocs();
             app.UseErrorHandler();
-            app.UseServiceId();
-
-            app.UseRabbitMq()
-                .SubscribeCommand<AddGameEventSource>(onError: (c, e) =>
-                    new AddGameEventSourceRejected(c.Id, e.Message, e.Code));
-                // .SubscribeCommand<UpdateGameEventSource>(onError: (c, e) =>
-                //     new UpdateGameEventSourceRejected(c.Id, e.Message, e.Code))
-                // .SubscribeCommand<DeleteGameEventSource>(onError: (c, e) =>
-                //     new DeleteGameEventSourceRejected(c.Id, e.Message, e.Code))
-
-            var consulServiceId = app.UseConsul();
+            app.UseSwaggerDocs();
             applicationLifetime.ApplicationStopped.Register(() =>
             {
-                client.Agent.ServiceDeregister(consulServiceId);
                 AutofacContainer.Dispose();
             });
-
         }
 
     }

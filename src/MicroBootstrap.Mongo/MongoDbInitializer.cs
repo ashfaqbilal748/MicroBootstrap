@@ -32,29 +32,11 @@ namespace MicroBootstrap.Mongo
             }
             
             _initialized = true;
-            RegisterConventions();
             if (!_seed)
             {
                 return;
             }
             await _seeder.SeedAsync();
-        }
-
-        private void RegisterConventions()
-        {
-            BsonSerializer.RegisterSerializer(typeof(decimal), new DecimalSerializer(BsonType.Decimal128));
-            BsonSerializer.RegisterSerializer(typeof(decimal?), new NullableSerializer<decimal>(new DecimalSerializer(BsonType.Decimal128)));
-            ConventionRegistry.Register("Conventions", new MongoDbConventions(), x => true);
-        }
-
-        private class MongoDbConventions : IConventionPack
-        {
-            public IEnumerable<IConvention> Conventions => new List<IConvention>
-            {
-                new IgnoreExtraElementsConvention(true),
-                new EnumRepresentationConvention(BsonType.String),
-                new CamelCaseElementNameConvention()
-            };
         }
     }
 }

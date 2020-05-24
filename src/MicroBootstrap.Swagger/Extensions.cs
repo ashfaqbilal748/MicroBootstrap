@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
-using  MicroBootstrap.Swagger;
+using MicroBootstrap.Swagger;
 using System;
 using Microsoft.OpenApi.Models;
 
@@ -13,30 +13,30 @@ namespace MicroBootstrap.Swagger
         private const string SectionName = "swagger";
         private const string RegistryName = "docs.swagger";
 
-        public static void AddSwaggerDocs(this IServiceCollection serviceCollection, string sectionName = SectionName)
+        public static IServiceCollection AddSwaggerDocs(this IServiceCollection serviceCollection, string sectionName = SectionName)
         {
             if (string.IsNullOrWhiteSpace(sectionName))
             {
                 sectionName = SectionName;
             }
-            
+
             var options = serviceCollection.GetOptions<SwaggerOptions>(sectionName);
-            serviceCollection.AddSwaggerDocs(options);
+            return serviceCollection.AddSwaggerDocs(options);
         }
-        
-        public static void AddSwaggerDocs(this IServiceCollection serviceCollection, 
+
+        public static IServiceCollection AddSwaggerDocs(this IServiceCollection serviceCollection,
             Func<ISwaggerOptionsBuilder, ISwaggerOptionsBuilder> buildOptions)
         {
             var options = buildOptions(new SwaggerOptionsBuilder()).Build();
-            serviceCollection.AddSwaggerDocs(options);
+            return serviceCollection.AddSwaggerDocs(options);
         }
 
-        public static void AddSwaggerDocs(this IServiceCollection serviceCollection, SwaggerOptions options)
+        public static IServiceCollection AddSwaggerDocs(this IServiceCollection serviceCollection, SwaggerOptions options)
         {
             serviceCollection.AddSingleton(options);
             serviceCollection.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc(options.Name, new OpenApiInfo{Title = options.Title, Version = options.Version});
+                c.SwaggerDoc(options.Name, new OpenApiInfo { Title = options.Title, Version = options.Version });
                 if (options.IncludeSecurity)
                 {
                     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -49,6 +49,7 @@ namespace MicroBootstrap.Swagger
                     });
                 }
             });
+            return serviceCollection;
         }
 
         public static IApplicationBuilder UseSwaggerDocs(this IApplicationBuilder builder)

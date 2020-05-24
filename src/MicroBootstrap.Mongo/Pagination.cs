@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using MicroBootstrap.Queries;
-using MicroBootstrap.Types;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 
@@ -9,7 +8,7 @@ namespace MicroBootstrap.Mongo
 {
     public static class Pagination
     {
-        public static async Task<PagedResult<T>> PaginateAsync<T>(this IMongoQueryable<T> collection, PagedQueryBase query)
+        public static async Task<PagedResult<T>> PaginateAsync<T>(this IMongoQueryable<T> collection, IPagedQuery query)
             => await collection.PaginateAsync(query.Page, query.Results);
 
         public static async Task<PagedResult<T>> PaginateAsync<T>(this IMongoQueryable<T> collection,
@@ -35,7 +34,7 @@ namespace MicroBootstrap.Mongo
             return PagedResult<T>.Create(data, page, resultsPerPage, totalPages, totalResults);
         }
 
-        public static IMongoQueryable<T> Limit<T>(this IMongoQueryable<T> collection, PagedQueryBase query)
+        public static IMongoQueryable<T> Limit<T>(this IMongoQueryable<T> collection, IPagedQuery query)
             => collection.Limit(query.Page, query.Results);
 
         public static IMongoQueryable<T> Limit<T>(this IMongoQueryable<T> collection,

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace MicroBootstrap.Jaeger
 {
     public class JaegerOptions
@@ -10,5 +12,7 @@ namespace MicroBootstrap.Jaeger
         public string Sampler { get; set; }
         public double MaxTracesPerSecond { get; set; } = 5;
         public double SamplingRate { get; set; } = 0.2;
+        
+        public IEnumerable<string> ExcludePaths { get; set; }
     }
 }

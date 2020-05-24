@@ -1,57 +1,75 @@
+using System.Threading;
 using Jaeger;
 using Jaeger.Reporters;
 using Jaeger.Samplers;
 using Jaeger.Senders;
-using Microsoft.Extensions.Configuration;
+using MicroBootstrap.Jaeger.Tracers;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using OpenTracing;
+using OpenTracing.Contrib.NetCore.Configuration;
 using OpenTracing.Util;
-using RawRabbit.Instantiation;
 
 namespace MicroBootstrap.Jaeger
 {
     public static class Extensions
     {
-        private static bool _initialized;
+        private static int _initialized;
+        private const string SectionName = "jaeger";
+        private const string RegistryName = "tracing.jaeger";
 
-        public static IServiceCollection AddJaeger(this IServiceCollection services)
+        public static IServiceCollection AddJaeger(this IServiceCollection serviceCollection, string sectionName = SectionName)
         {
-            if (_initialized)
+            if (string.IsNullOrWhiteSpace(sectionName))
             {
-                return services;
+                sectionName = SectionName;
             }
 
-            _initialized = true;
-            var options = GetJaegerOptions(services);
+            var options = serviceCollection.GetOptions<JaegerOptions>(sectionName);
+            return serviceCollection.AddJaeger(options);
+        }
 
+        public static IServiceCollection AddJaeger(this IServiceCollection serviceCollection, JaegerOptions options)
+        {
+            if (Interlocked.Exchange(ref _initialized, 1) == 1)
+            {
+                return serviceCollection;
+            }
+
+            serviceCollection.AddSingleton(options);
             if (!options.Enabled)
             {
                 var defaultTracer = DefaultTracer.Create();
-                services.AddSingleton(defaultTracer);
-                return services;
+                serviceCollection.AddSingleton(defaultTracer);
+                return serviceCollection;
             }
 
-            services.AddSingleton<ITracer>(sp =>
+            if (options.ExcludePaths is { })
+            {
+                serviceCollection.Configure<AspNetCoreDiagnosticOptions>(o =>
+                {
+                    foreach (var path in options.ExcludePaths)
+                    {
+                        o.Hosting.IgnorePatterns.Add(x => x.Request.Path == path);
+                    }
+                });
+            }
+
+            serviceCollection.AddOpenTracing();
+            serviceCollection.AddSingleton<ITracer>(sp =>
             {
                 var loggerFactory = sp.GetRequiredService<ILoggerFactory>();
-                //https://github.com/jaegertracing/jaeger-client-csharp/blob/master/src/Jaeger/Reporters/README.md
-                var reporter = new RemoteReporter
-                        .Builder()
+
+                var reporter = new RemoteReporter.Builder()
                     .WithSender(new UdpSender(options.UdpHost, options.UdpPort, options.MaxPacketSize))
                     .WithLoggerFactory(loggerFactory)
                     .Build();
 
-                //https://github.com/jaegertracing/jaeger-client-csharp/blob/master/src/Jaeger/Samplers/README.md
                 var sampler = GetSampler(options);
 
-                //https://github.com/jaegertracing/jaeger-client-csharp
-                //Jaeger clients are language specific implementations of the OpenTracing API
-                //https://www.jaegertracing.io/docs/1.13/architecture/
-                //Create Tracer Implementation with JaegerClientCsharp for OpenTracer ITracer interface
-                //actually opentracer is a abstraction
-                var tracer = new Tracer
-                        .Builder(options.ServiceName)
+                var tracer = new Tracer.Builder(options.ServiceName)
+                    .WithLoggerFactory(loggerFactory)
                     .WithReporter(reporter)
                     .WithSampler(sampler)
                     .Build();
@@ -61,38 +79,26 @@ namespace MicroBootstrap.Jaeger
                 return tracer;
             });
 
-            return services;
+            return serviceCollection;
         }
 
-        public static IClientBuilder UseJaeger(this IClientBuilder builder, ITracer tracer)
+        public static IApplicationBuilder UseJaeger(this IApplicationBuilder app)
         {
-            builder.Register(pipe => pipe
-                .Use<JaegerStagedMiddleware>(tracer));
-            return builder;
-        }
-
-        private static JaegerOptions GetJaegerOptions(IServiceCollection services)
-        {
-            using (var serviceProvider = services.BuildServiceProvider())
+            JaegerOptions options;
+            using (var scope = app.ApplicationServices.CreateScope())
             {
-                var configuration = serviceProvider.GetService<IConfiguration>();
-                services.Configure<JaegerOptions>(configuration.GetSection("jaeger"));
-                return configuration.GetOptions<JaegerOptions>("jaeger");
+                options = scope.ServiceProvider.GetService<JaegerOptions>();
             }
+
+            return app;
         }
 
         private static ISampler GetSampler(JaegerOptions options)
         {
-            //sampler use for when we don't want send every thing for tracing to jaeger but imagine we wll have
-            //thousand or milion request and that would paintfull to report every request to jaeger.and we need sample this 
-            //data 
             switch (options.Sampler)
             {
-                //sample some constant number that was less there is picked by jaeger
                 case "const": return new ConstSampler(true);
-                //max rate per second, max number trace by jaeger per second
                 case "rate": return new RateLimitingSampler(options.MaxTracesPerSecond);
-                //we can say trace for example 5% of our total requests
                 case "probabilistic": return new ProbabilisticSampler(options.SamplingRate);
                 default: return new ConstSampler(true);
             }
