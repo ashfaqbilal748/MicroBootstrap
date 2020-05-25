@@ -44,7 +44,7 @@ namespace Game.Services.Messaging.API
             services.AddJaeger();
             services.AddOpenTracing();
             services.AddRedis();
-            services.AddJwt();
+            //services.AddJwt();
 
             services.AddCors(options =>
             {

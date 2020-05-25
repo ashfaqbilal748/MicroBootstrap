@@ -15,11 +15,15 @@ using Microsoft.Extensions.Hosting;
 using Consul;
 using MicroBootstrap.Metrics;
 using Microsoft.Extensions.DependencyInjection;
+using Game.Services.EventProcessor.Infrastructure.Mongo.Repositories;
+using Game.Services.EventProcessor.Core.Repositories;
 
 public static class Extensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection serviceCollection)
     {
+        serviceCollection.AddTransient<IGameEventSourceRepository, GameEventSourceMongoRepository>();
+        
         return serviceCollection
             .AddHttpClient()
             .AddConsul()

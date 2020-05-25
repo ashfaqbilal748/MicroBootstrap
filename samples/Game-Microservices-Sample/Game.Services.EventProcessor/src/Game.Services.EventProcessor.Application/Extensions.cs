@@ -9,7 +9,8 @@ namespace Game.Services.EventProcessor.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection serviceCollection)
         {
-            serviceCollection.AddCommandHandlers()
+            serviceCollection
+                .AddCommandHandlers()
                 .AddEventHandlers()
                 .AddInMemoryCommandDispatcher()
                 .AddInMemoryEventDispatcher()

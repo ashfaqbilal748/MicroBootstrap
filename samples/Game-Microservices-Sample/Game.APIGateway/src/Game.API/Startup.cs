@@ -43,7 +43,7 @@ namespace Game.API
             services.AddHealthChecks();
             services.AddSwaggerDocs();
             services.AddConsul();
-            services.AddJwt();
+            //services.AddJwt();
             services.AddJaeger();
             services.AddOpenTracing();
             services.AddRedis();
@@ -91,7 +91,7 @@ namespace Game.API
             app.UseRouting();
             app.UseErrorHandler();
             app.UseAuthorization();
-            app.UseAccessTokenValidator();
+            app.UseAuthentication();
             app.UseServiceId();
             app.UseEndpoints(endpoints =>
             {

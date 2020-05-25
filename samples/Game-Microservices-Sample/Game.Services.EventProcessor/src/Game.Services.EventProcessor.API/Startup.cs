@@ -11,6 +11,9 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Http;
 using Game.Services.EventProcessor.Application;
+using MicroBootstrap.Queries;
+using Game.Services.EventProcessor.Core.Messages.Queries;
+using Game.Services.EventProcessor.Core.DTO;
 
 namespace Game.Services.EventProcessor.API
 {
@@ -31,7 +34,8 @@ namespace Game.Services.EventProcessor.API
             services.AddWebApi();
             services.AddHealthChecks();
             services.AddSwaggerDocs();
-            services.AddJwt();
+            //services.AddJwt();
+            
             services.AddInfrastructure();
             services.AddApplication();
 
@@ -73,9 +77,9 @@ namespace Game.Services.EventProcessor.API
             app.UseInitializers();
             app.UseRouting();
             app.UseStaticFiles();
-            app.UseAuthentication();
-            app.UseAuthorization();
-            app.UseAccessTokenValidator();
+            // app.UseAuthentication();
+            // app.UseAuthorization();
+            // app.UseAccessTokenValidator();
             app.UseServiceId();
 
             app.UseEndpoints(endpoints =>
