@@ -6,14 +6,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MicroBootstrap.Swagger;
-using MicroBootstrap.Authentication;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Http;
 using Game.Services.EventProcessor.Application;
-using MicroBootstrap.Queries;
-using Game.Services.EventProcessor.Core.Messages.Queries;
-using Game.Services.EventProcessor.Core.DTO;
+using Game.Services.EventProcessor.Infrastructure;
 
 namespace Game.Services.EventProcessor.API
 {
@@ -35,7 +32,7 @@ namespace Game.Services.EventProcessor.API
             services.AddHealthChecks();
             services.AddSwaggerDocs();
             //services.AddJwt();
-            
+
             services.AddInfrastructure();
             services.AddApplication();
 

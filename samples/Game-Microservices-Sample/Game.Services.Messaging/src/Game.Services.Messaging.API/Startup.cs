@@ -2,18 +2,13 @@ using System;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using MicroBootstrap;
-using MicroBootstrap.Authentication;
 using MicroBootstrap.Consul;
-using MicroBootstrap.Dispatchers;
-using MicroBootstrap.Jaeger;
-using MicroBootstrap.Mongo;
 using MicroBootstrap.RabbitMq;
 using MicroBootstrap.Redis;
 using MicroBootstrap.Swagger;
 using MicroBootstrap.WebApi;
 using Consul;
 using Game.Services.Messaging.Application.Services;
-using Game.Services.Messaging.Core.Entities;
 using Game.Services.Messaging.Core.Messages.Events;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,6 +16,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Game.Services.Messaging.Application;
+using Game.Services.Messaging.Infrastructure;
 
 namespace Game.Services.Messaging.API
 {
@@ -30,7 +27,7 @@ namespace Game.Services.Messaging.API
         {
             Configuration = configuration;
         }
-
+        private static readonly string[] Headers = new[] { "X-Operation", "X-Resource", "X-Total-Count" };
         public ILifetimeScope AutofacContainer { get; private set; }
         public IConfiguration Configuration { get; }
 
@@ -40,23 +37,27 @@ namespace Game.Services.Messaging.API
             services.AddWebApi();
             services.AddHealthChecks();
             services.AddSwaggerDocs();
-            services.AddConsul();
-            services.AddJaeger();
-            services.AddOpenTracing();
-            services.AddRedis();
             //services.AddJwt();
 
+            services.AddInfrastructure();
+            services.AddApplication();
+
+            AddSignalR(services);
+
+            //RestEase Services
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy", cors =>
-                        cors.AllowAnyOrigin()
-                            .AllowAnyMethod()
-                            .AllowAnyHeader()
-                            .AllowCredentials());
+                    cors.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials()
+                        .WithExposedHeaders(Headers));
             });
-            AddSignalR(services);
-            services.AddInitializers(typeof(IMongoDbInitializer));
-            //RestEase Services
+
+            services.AddInitializers();
+
+            //RestEase Register Services
 
         }
 
@@ -66,13 +67,7 @@ namespace Game.Services.Messaging.API
         // Don't build the container; that gets done for you by the factory.
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            // Register your own things directly with Autofac, like:
-            builder.RegisterAssemblyTypes(typeof(Startup).Assembly)
-                .AsImplementedInterfaces();
-            builder.AddDispatchers();
-            builder.AddMongo();
-            builder.AddMongoRepository<GameEventSource>("GameEventSources");
-            builder.AddRabbitMq();
+            // Register your own things directly with Autofac
         }
 
         private void AddSignalR(IServiceCollection services)
@@ -89,8 +84,7 @@ namespace Game.Services.Messaging.API
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
-          IHostApplicationLifetime applicationLifetime, IConsulClient client,
-          IStartupInitializer startupInitializer, SignalrOptions signalrOptions)
+          IHostApplicationLifetime applicationLifetime)
         {
             // If, for some reason, you need a reference to the built container, you
             // can use the convenience extension method GetAutofacRoot.
@@ -99,6 +93,7 @@ namespace Game.Services.Messaging.API
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseInfrastructure();
             app.UseInitializers();
             app.UseRouting();
             app.UseAuthorization();
@@ -114,14 +109,8 @@ namespace Game.Services.Messaging.API
             app.UseSwaggerDocs();
             app.UseErrorHandler();
             app.UseServiceId();
-
-            app.UseRabbitMq()
-            .SubscribeEvent<GameEventSourceAdded>(@namespace: "game-event-sources");
-
-            var consulServiceId = app.UseConsul();
             applicationLifetime.ApplicationStopped.Register(() =>
             {
-                client.Agent.ServiceDeregister(consulServiceId);
                 AutofacContainer.Dispose();
             });
 

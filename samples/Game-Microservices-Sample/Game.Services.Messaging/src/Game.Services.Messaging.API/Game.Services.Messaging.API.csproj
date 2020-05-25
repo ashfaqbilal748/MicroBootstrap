@@ -10,7 +10,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\src\MicroBootstrap.csproj" />
-    <ProjectReference Include="..\Game.Services.Messaging.Core\Game.Services.Messaging.Core.csproj" />
     <ProjectReference Include="..\Game.Services.Messaging.Application\Game.Services.Messaging.Application.csproj" />
+    <ProjectReference Include="..\Game.Services.Messaging.Core\Game.Services.Messaging.Core.csproj" />
+    <ProjectReference Include="..\Game.Services.Messaging.Infrastructure\Game.Services.Messaging.Infrastructure.csproj" />
   </ItemGroup>
 </Project>
