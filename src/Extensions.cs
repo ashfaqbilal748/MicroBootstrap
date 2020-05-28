@@ -10,8 +10,10 @@ namespace MicroBootstrap
 {
     public static class Extensions
     {
-        public static string Underscore(this string value)
-            => string.Concat(value.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString() : x.ToString()));
+        public static string ToSnakeCase(this string value)
+            => string.Concat(value.Select((x, i) =>
+                    i > 0 && value[i - 1] != '.' && value[i - 1] != '/' && char.IsUpper(x) ? "_" + x : x.ToString()))
+                .ToLowerInvariant();
 
         public static TModel GetOptions<TModel>(this IConfiguration configuration, string sectionName)
              where TModel : new()
@@ -54,6 +56,6 @@ namespace MicroBootstrap
 
             return app;
         }
-        
+
     }
 }

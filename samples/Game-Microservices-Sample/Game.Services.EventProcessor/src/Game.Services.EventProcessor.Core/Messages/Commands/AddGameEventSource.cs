@@ -1,9 +1,11 @@
 using System;
 using Newtonsoft.Json;
 using MicroBootstrap.Commands;
+using MicroBootstrap.Messages;
 
 namespace Game.Services.EventProcessor.Core.Messages.Commands
 {
+    [Message("game-event-sources")]
     public class AddGameEventSource : ICommand
     {
         public Guid Id { get; }

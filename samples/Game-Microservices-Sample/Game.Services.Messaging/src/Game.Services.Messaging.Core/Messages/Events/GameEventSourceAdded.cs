@@ -4,7 +4,7 @@ using MicroBootstrap.Messages;
 using Newtonsoft.Json;
 namespace Game.Services.Messaging.Core.Messages.Events
 {
-    [MessageNamespace("game-event-sources")]
+    [Message("game-event-sources")]
     public class GameEventSourceAdded : IEvent
     {
         public Guid Id { get; }

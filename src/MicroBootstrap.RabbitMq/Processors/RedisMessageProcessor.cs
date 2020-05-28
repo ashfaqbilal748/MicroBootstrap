@@ -14,9 +14,9 @@ namespace MicroBootstrap.RabbitMq.Processors
         {
             _cache = cache;
             _options = options;
-            _service = string.IsNullOrWhiteSpace(options.Namespace)
+            _service = string.IsNullOrWhiteSpace(options.Exchange?.Name)
                 ? Guid.NewGuid().ToString("N")
-                : options.Namespace;
+                : options.Exchange?.Name;
         }
 
         public async Task<bool> TryProcessAsync(string id)

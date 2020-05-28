@@ -23,7 +23,7 @@ namespace MicroBootstrap.RabbitMq
         private const string RegistryName = "messageBrokers.rabbitMq";
 
         internal static string GetMessageName(this object message)
-            => message.GetType().Name.Underscore().ToLowerInvariant();
+            => message.GetType().Name.ToSnakeCase().ToLowerInvariant();
 
         public static IServiceCollection AddRabbitMq(this IServiceCollection serviceCollection,
             string sectionName = SectionName,
@@ -80,7 +80,7 @@ namespace MicroBootstrap.RabbitMq
             {
                 var options = serviceProvider.GetService<RabbitMqOptions>();
                 var configuration = serviceProvider.GetService<RawRabbitConfiguration>();
-                var namingConventions = new CustomNamingConventions(options.Namespace);
+                var namingConventions = new CustomNamingConventions(options);
                 var tracer = serviceProvider.GetService<ITracer>();
                 var register = plugins?.Invoke(new RabbitMqPluginRegister(serviceProvider));
 

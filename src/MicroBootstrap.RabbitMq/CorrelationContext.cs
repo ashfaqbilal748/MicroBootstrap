@@ -62,6 +62,6 @@ namespace MicroBootstrap.RabbitMq
                 resource, 0);
 
         private static string GetName(string name)
-            => name.Underscore().ToLowerInvariant();
+            => name.ToSnakeCase().ToLowerInvariant();
     }
 }

@@ -17,7 +17,7 @@ namespace MicroBootstrap.RabbitMq.Processors
 
         public Task<bool> TryProcessAsync(string id)
         {
-            var key = GetKey(_options.Namespace, id);
+            var key = GetKey(_options.Exchange?.Name, id);
             if (_cache.TryGetValue(key, out _))
             {
                 return Task.FromResult(false);
@@ -31,7 +31,7 @@ namespace MicroBootstrap.RabbitMq.Processors
 
         public Task RemoveAsync(string id)
         {
-            _cache.Remove(GetKey(_options.Namespace, id));
+            _cache.Remove(GetKey(_options.Exchange?.Name, id));
 
             return Task.CompletedTask;
         }

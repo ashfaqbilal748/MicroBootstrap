@@ -1,13 +1,22 @@
-@apiUrl = http://localhost:5000
+@apiUrl = http://localhost:7000
 @gameEventSourceId = d04ec35e-9e7e-4033-9fa6-76679671d1b3
 
 # ================= API GATEWAY ======================= #
 
-### Get products list
+### Get GameEventSouece list
 GET {{apiUrl}}/game-event-sources
 
-### Get product details by updating @productId parameter above
+### Get GameEventSouece details
 GET {{apiUrl}}/game-event-sources/{{gameEventSourceId}}
+
+### Create GameEventSouece
+POST {{apiUrl}}/game-event-sources
+content-type: application/json
+
+{
+	"isWin": true,
+	"score": 10,
+}
 
 # ### Update a product if needed
 # PUT {{apiUrl}}/products/{{gameEventSourceId}}

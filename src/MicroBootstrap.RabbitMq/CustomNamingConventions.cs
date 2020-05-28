@@ -7,41 +7,62 @@ namespace MicroBootstrap.RabbitMq
 {
     internal sealed class CustomNamingConventions : NamingConventions
     {
-        //defaultName space read fron rabbitmq custom property namespace
-        public CustomNamingConventions(string defaultNamespace)
+        private readonly RabbitMqOptions _options;
+        private readonly bool _snakeCase;
+        private readonly string _queueTemplate;
+        public CustomNamingConventions(RabbitMqOptions options)
         {
+            _options = options;
+            _queueTemplate = string.IsNullOrWhiteSpace(_options.Queue.Template)
+                ? "{{assembly}}/{{exchange}}.{{message}}"
+                : options.Queue.Template;
+            _snakeCase = options.ConventionsCasing?.Equals("snakeCase", StringComparison.InvariantCultureIgnoreCase) == true;
             var assemblyName = Assembly.GetEntryAssembly()?.GetName().Name;
-            ExchangeNamingConvention = type => GetNamespace(type, defaultNamespace).ToLowerInvariant();
-            RoutingKeyConvention = type =>
-                $"{GetRoutingKeyNamespace(type, defaultNamespace)}{type.Name.Underscore()}".ToLowerInvariant();
-            QueueNamingConvention = type => GetQueueName(assemblyName, type, defaultNamespace);
-            ErrorExchangeNamingConvention = () => $"{defaultNamespace}.error";
-            RetryLaterExchangeConvention = span => $"{defaultNamespace}.retry";
+            ExchangeNamingConvention = type => GetExchangeName(type);
+            RoutingKeyConvention = type => GetRoutingKey(type);
+            QueueNamingConvention = type => GetQueue(type);
+            ErrorExchangeNamingConvention = () => $"{GetExchangeName()}.error";
+            RetryLaterExchangeConvention = span => $"{GetExchangeName()}.retry";
             RetryLaterQueueNameConvetion = (exchange, span) =>
-                $"{defaultNamespace}.retry_for_{exchange.Replace(".", "_")}_in_{span.TotalMilliseconds}_ms"
+                $"{GetExchangeName()}.retry_for_{exchange.Replace(".", "_")}_in_{span.TotalMilliseconds}_ms"
                     .ToLowerInvariant();
         }
 
-        private static string GetRoutingKeyNamespace(Type type, string defaultNamespace)
+        private string GetRoutingKey(Type type)
         {
-            var @namespace = type.GetCustomAttribute<MessageNamespaceAttribute>()?.Namespace ?? defaultNamespace;
+            var attribute = GeAttribute(type);
+            var routingKey = string.IsNullOrWhiteSpace(attribute?.RoutingKey) ? type.Name : attribute.RoutingKey;
 
-            return string.IsNullOrWhiteSpace(@namespace) ? string.Empty : $"{@namespace}.";
+            return ApplySnakeCasing(routingKey);
         }
 
-        private static string GetNamespace(Type type, string defaultNamespace)
+        private string GetExchangeName(Type type = null)
         {
-            var @namespace = type.GetCustomAttribute<MessageNamespaceAttribute>()?.Namespace ?? defaultNamespace;
+            var attribute = GeAttribute(type);
+            var exchange = string.IsNullOrWhiteSpace(attribute?.Exchange)
+                ? string.IsNullOrWhiteSpace(_options.Exchange?.Name) ? type.Assembly.GetName().Name :
+                _options.Exchange.Name
+                : attribute.Exchange;
 
-            return string.IsNullOrWhiteSpace(@namespace) ? type.Name.Underscore() : $"{@namespace}";
+            return ApplySnakeCasing(exchange);
         }
-
-        private static string GetQueueName(string assemblyName, Type type, string defaultNamespace)
+        public string GetQueue(Type type)
         {
-            var @namespace = type.GetCustomAttribute<MessageNamespaceAttribute>()?.Namespace ?? defaultNamespace;
-            var separatedNamespace = string.IsNullOrWhiteSpace(@namespace) ? string.Empty : $"{@namespace}.";
+            var attribute = GeAttribute(type);
+            if (!string.IsNullOrWhiteSpace(attribute?.Queue))
+            {
+                return ApplySnakeCasing(attribute.Queue);
+            }
+            var assembly = type.Assembly.GetName().Name;
+            var message = type.Name;
+            var exchange = string.IsNullOrWhiteSpace(attribute?.Exchange) ? _options.Exchange.Name : attribute.Exchange;
+            var queue = _queueTemplate.Replace("{{assembly}}", assembly)
+                .Replace("{{exchange}}", exchange)
+                .Replace("{{message}}", message);
 
-            return $"{assemblyName}/{separatedNamespace}{type.Name.Underscore()}".ToLowerInvariant();
+            return ApplySnakeCasing(queue);
         }
+        private string ApplySnakeCasing(string value) => _snakeCase ? value.ToSnakeCase() : value;
+        private MessageAttribute GeAttribute(MemberInfo type) => type == null ? null : type.GetCustomAttribute<MessageAttribute>();
     }
 }

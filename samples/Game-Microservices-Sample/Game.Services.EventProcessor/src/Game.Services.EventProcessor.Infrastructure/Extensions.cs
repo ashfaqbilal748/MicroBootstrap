@@ -51,7 +51,7 @@ namespace Game.Services.EventProcessor.Infrastructure
                  .UseAppMetrics()
                  .UseRabbitMq()
                      .SubscribeCommand<AddGameEventSource>(onError: (c, e) =>
-                         new AddGameEventSourceRejected(c.Id, e.Message, e.Code));
+                           new AddGameEventSourceRejected(c.Id, e.Message, e.Code));
             // .SubscribeCommand<UpdateGameEventSource>(onError: (c, e) =>
             //     new UpdateGameEventSourceRejected(c.Id, e.Message, e.Code))
             // .SubscribeCommand<DeleteGameEventSource>(onError: (c, e) =>
