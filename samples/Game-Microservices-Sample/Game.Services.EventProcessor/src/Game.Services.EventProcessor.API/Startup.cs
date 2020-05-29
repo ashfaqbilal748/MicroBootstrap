@@ -11,6 +11,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Http;
 using Game.Services.EventProcessor.Application;
 using Game.Services.EventProcessor.Infrastructure;
+using MicroBootstrap.Commands;
+using Game.Services.EventProcessor.Core.Messages.Commands;
 
 namespace Game.Services.EventProcessor.API
 {
@@ -35,7 +37,6 @@ namespace Game.Services.EventProcessor.API
 
             services.AddInfrastructure();
             services.AddApplication();
-
             //RestEase Services
             services.AddCors(options =>
             {
@@ -65,7 +66,7 @@ namespace Game.Services.EventProcessor.API
         {
             // If, for some reason, you need a reference to the built container, you
             // can use the convenience extension method GetAutofacRoot.
-            this.AutofacContainer = app.ApplicationServices.GetAutofacRoot();
+            //this.AutofacContainer = app.ApplicationServices.GetAutofacRoot();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

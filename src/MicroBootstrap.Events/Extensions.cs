@@ -13,7 +13,7 @@ namespace MicroBootstrap.Events
         public static IServiceCollection AddEventHandlers(this IServiceCollection serviceCollection)
         {
             serviceCollection.Scan(s =>
-            s.FromAssemblies(System.Reflection.Assembly.GetCallingAssembly())
+            s.FromAssemblies(AppDomain.CurrentDomain.GetAssemblies())
                 .AddClasses(c => c.AssignableTo(typeof(IEventHandler<>)))
                 .AsImplementedInterfaces()
                 .WithTransientLifetime());

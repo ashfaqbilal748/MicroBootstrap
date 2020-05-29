@@ -13,7 +13,7 @@ namespace MicroBootstrap.Commands
         public static IServiceCollection AddCommandHandlers(this IServiceCollection serviceCollection)
         {
             serviceCollection.Scan(s =>
-            s.FromAssemblies(System.Reflection.Assembly.GetCallingAssembly())
+            s.FromAssemblies(AppDomain.CurrentDomain.GetAssemblies())
                 .AddClasses(c => c.AssignableTo(typeof(ICommandHandler<>)))
                 .AsImplementedInterfaces()
                 .WithTransientLifetime());

@@ -35,8 +35,7 @@ namespace MicroBootstrap.RabbitMq
             _retryInterval = options.RetryInterval > 0 ? options.RetryInterval : 2;
         }
 
-        public IBusSubscriber SubscribeCommand<TCommand>(string @namespace = null, string queueName = null,
-            Func<TCommand, CustomException, IRejectedEvent> onError = null)
+        public IBusSubscriber SubscribeCommand<TCommand>(Func<TCommand, CustomException, IRejectedEvent> onError = null)
             where TCommand : ICommand
         {
             //insted getting message directly like dispatcher get message from bus and find handler fot it
@@ -52,8 +51,7 @@ namespace MicroBootstrap.RabbitMq
             return this;
         }
 
-        public IBusSubscriber SubscribeEvent<TEvent>(string @namespace = null, string queueName = null,
-            Func<TEvent, CustomException, IRejectedEvent> onError = null)
+        public IBusSubscriber SubscribeEvent<TEvent>(Func<TEvent, CustomException, IRejectedEvent> onError = null)
             where TEvent : IEvent
         {
             _busClient.SubscribeAsync<TEvent, CorrelationContext>(async (@event, correlationContext) =>

@@ -16,15 +16,15 @@ namespace MicroBootstrap.RabbitMq
             _queueTemplate = string.IsNullOrWhiteSpace(_options.Queue.Template)
                 ? "{{assembly}}/{{exchange}}.{{message}}"
                 : options.Queue.Template;
-            _snakeCase = options.ConventionsCasing?.Equals("snakeCase", StringComparison.InvariantCultureIgnoreCase) == true;
+            _snakeCase = options.ConventionsCasing == null ? true : options.ConventionsCasing?.Equals("snakeCase", StringComparison.InvariantCultureIgnoreCase) == true;
             var assemblyName = Assembly.GetEntryAssembly()?.GetName().Name;
             ExchangeNamingConvention = type => GetExchangeName(type);
             RoutingKeyConvention = type => GetRoutingKey(type);
             QueueNamingConvention = type => GetQueue(type);
-            ErrorExchangeNamingConvention = () => $"{GetExchangeName()}.error";
-            RetryLaterExchangeConvention = span => $"{GetExchangeName()}.retry";
+            ErrorExchangeNamingConvention = () => $"{options?.Exchange?.Name}.error";
+            RetryLaterExchangeConvention = span => $"{options?.Exchange?.Name}.retry";
             RetryLaterQueueNameConvetion = (exchange, span) =>
-                $"{GetExchangeName()}.retry_for_{exchange.Replace(".", "_")}_in_{span.TotalMilliseconds}_ms"
+                $"{options?.Exchange?.Name}.retry_for_{exchange.Replace(".", "_")}_in_{span.TotalMilliseconds}_ms"
                     .ToLowerInvariant();
         }
 
@@ -36,12 +36,12 @@ namespace MicroBootstrap.RabbitMq
             return ApplySnakeCasing(routingKey);
         }
 
-        private string GetExchangeName(Type type = null)
+        private string GetExchangeName(Type type)
         {
             var attribute = GeAttribute(type);
             var exchange = string.IsNullOrWhiteSpace(attribute?.Exchange)
-                ? string.IsNullOrWhiteSpace(_options.Exchange?.Name) ? type.Assembly.GetName().Name :
-                _options.Exchange.Name
+                ? string.IsNullOrWhiteSpace(_options.Exchange?.Name) ?
+                _options.Exchange.Name : type.Assembly.GetName().Name
                 : attribute.Exchange;
 
             return ApplySnakeCasing(exchange);
@@ -63,6 +63,6 @@ namespace MicroBootstrap.RabbitMq
             return ApplySnakeCasing(queue);
         }
         private string ApplySnakeCasing(string value) => _snakeCase ? value.ToSnakeCase() : value;
-        private MessageAttribute GeAttribute(MemberInfo type) => type == null ? null : type.GetCustomAttribute<MessageAttribute>();
+        private MessageAttribute GeAttribute(MemberInfo type) => type.GetCustomAttribute<MessageAttribute>();
     }
 }

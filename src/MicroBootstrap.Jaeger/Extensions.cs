@@ -73,8 +73,8 @@ namespace MicroBootstrap.Jaeger
                     .WithReporter(reporter)
                     .WithSampler(sampler)
                     .Build();
-
-                GlobalTracer.Register(tracer);
+                if (GlobalTracer.IsRegistered() == false)
+                    GlobalTracer.Register(tracer);
 
                 return tracer;
             });

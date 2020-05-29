@@ -42,7 +42,7 @@ namespace Game.Services.Messaging.Infrastructure
             app.UseErrorHandler()
                  .UseJaeger()
                  .UseAppMetrics()
-                 .UseRabbitMq().SubscribeEvent<GameEventSourceAdded>(@namespace: "game-event-sources");
+                 .UseRabbitMq().SubscribeEvent<GameEventSourceAdded>();
 
             var consulServiceId = app.UseConsul();
             applicationLifetime.ApplicationStopped.Register(() =>
