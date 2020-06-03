@@ -88,7 +88,7 @@ namespace Game.Services.Messaging.API
                             config.AddCommandLine(args);
                         }
                     })
-                    .UseContentRoot(Directory.GetCurrentDirectory())
+                    //.UseContentRoot(Directory.GetCurrentDirectory())
                     .UseStartup<Startup>();
                 });
     }

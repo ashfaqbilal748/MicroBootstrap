@@ -15,7 +15,7 @@ namespace Game.Services.Messaging.Application.Services
 
         public async Task PublishGameEventSourceAddedAsync(GameEventSourceAdded @event)
         {
-            await _hubContextWrapper.PublishToUserAsync(new System.Guid("53286016-126e-45eb-8d8c-4adfcf95ca1e"), "game_event_source_added",
+            await _hubContextWrapper.PublishToAllAsync("game_event_source_added",
                 new
                 {
                     id = @event.Id,

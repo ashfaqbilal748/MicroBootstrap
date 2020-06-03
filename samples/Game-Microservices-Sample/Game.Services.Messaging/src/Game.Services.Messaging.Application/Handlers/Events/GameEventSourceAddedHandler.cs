@@ -17,7 +17,7 @@ namespace Game.Services.Messaging.Application.Handlers.Events
 
         public Task HandleAsync(GameEventSourceAdded @event, ICorrelationContext context)
         {
-            return Task.CompletedTask;
+           return _hubService.PublishGameEventSourceAddedAsync(@event);
         }
     }
 }

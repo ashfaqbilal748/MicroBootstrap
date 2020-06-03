@@ -24,7 +24,7 @@ namespace Game.Services.Messaging.API
         {
             Configuration = configuration;
         }
-        private static readonly string[] Headers = new[] { "X-Operation", "X-Resource", "X-Total-Count" };
+        private static readonly string[] Headers = new[] { "X-Resource" };
         public ILifetimeScope AutofacContainer { get; private set; }
         public IConfiguration Configuration { get; }
 
@@ -94,13 +94,15 @@ namespace Game.Services.Messaging.API
             app.UseInitializers();
             app.UseRouting();
             app.UseAuthorization();
+            app.UseStaticFiles();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapGet("/", async context =>
                                      await context.Response.WriteAsync(context.RequestServices.GetService<AppOptions>().Name));
                 endpoints.MapHealthChecks("/healthz");
-                endpoints.MapHub<GameHub>("/gameHub");
+                var signalrOptions = app.ApplicationServices.GetRequiredService<SignalrOptions>();
+                endpoints.MapHub<GameHub>($"/{signalrOptions.Hub}");
             });
             app.UseAllForwardedHeaders();
             app.UseSwaggerDocs();

@@ -7,11 +7,13 @@ namespace Game.Services.Messaging.Application.Services
 {
     public class GameHub : Hub
     {
-        private readonly IJwtHandler _jwtHandler;
+        //private readonly IJwtHandler _jwtHandler;
 
-        public GameHub(IJwtHandler jwtHandler)
+        public GameHub(
+            //IJwtHandler jwtHandler
+            )
         {
-            _jwtHandler = jwtHandler;
+            //_jwtHandler = jwtHandler;
         }
 
         public async Task InitializeAsync(string token)
@@ -22,15 +24,15 @@ namespace Game.Services.Messaging.Application.Services
             }
             try
             {
-                var payload = _jwtHandler.GetTokenPayload(token);
-                if (payload == null)
-                {
-                    await DisconnectAsync();
+                // var payload = _jwtHandler.GetTokenPayload(token);
+                // if (payload == null)
+                // {
+                //     await DisconnectAsync();
                     
-                    return;
-                }
-                var group = Guid.Parse(payload.Subject).ToUserGroup();
-                await Groups.AddToGroupAsync(Context.ConnectionId, group);
+                //     return;
+                // }
+                // var group = Guid.Parse(payload.Subject).ToUserGroup();
+                // await Groups.AddToGroupAsync(Context.ConnectionId, group);
                 await ConnectAsync();
             }
             catch
