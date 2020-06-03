@@ -2,14 +2,10 @@ using System;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using MicroBootstrap;
-using MicroBootstrap.Consul;
-using MicroBootstrap.RabbitMq;
 using MicroBootstrap.Redis;
 using MicroBootstrap.Swagger;
 using MicroBootstrap.WebApi;
-using Consul;
 using Game.Services.Messaging.Application.Services;
-using Game.Services.Messaging.Core.Messages.Events;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -18,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Game.Services.Messaging.Application;
 using Game.Services.Messaging.Infrastructure;
+using System.Reflection;
 
 namespace Game.Services.Messaging.API
 {

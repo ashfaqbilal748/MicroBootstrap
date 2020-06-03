@@ -1,4 +1,6 @@
 using System;
+using Game.Services.Messaging.Application.Services;
+using Game.Services.Messaging.Core.Services;
 using MicroBootstrap.Commands;
 using MicroBootstrap.Events;
 using MicroBootstrap.Queries;
@@ -20,6 +22,9 @@ namespace Game.Services.Messaging.Application
                 .AddInMemoryEventDispatcher()
                 .AddQueryHandlers()
                 .AddInMemoryQueryDispatcher();
+
+            serviceCollection.AddTransient<IHubService, HubService>();
+            serviceCollection.AddTransient<IHubWrapper, HubWrapper>();
             return serviceCollection;
         }
     }
