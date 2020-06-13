@@ -14,4 +14,4 @@ case "$TRAVIS_BRANCH" in
   "develop")
     dotnet nuget push *.nupkg -k $MYGET_DEV_API_KEY -s https://www.myget.org/F/micro-bootstrap-dev/api/v3/index.json
     ;;    
-esacs
+esac
