@@ -11,5 +11,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\src\MicroBootstrap.csproj" />
+    <!-- <PackageReference Include="MicroBootstrap_" Version="1.*"/> -->
   </ItemGroup>
 </Project>
