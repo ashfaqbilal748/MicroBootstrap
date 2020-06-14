@@ -9,10 +9,15 @@
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Redis" Version="1.1.5" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\src\MicroBootstrap.csproj" />
     <ProjectReference Include="..\Game.Services.Messaging.Application\Game.Services.Messaging.Application.csproj" />
     <ProjectReference Include="..\Game.Services.Messaging.Core\Game.Services.Messaging.Core.csproj" />
     <ProjectReference Include="..\Game.Services.Messaging.Infrastructure\Game.Services.Messaging.Infrastructure.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+    <ProjectReference Include="..\..\..\..\..\src\MicroBootstrap\MicroBootstrap.csproj" />
+  </ItemGroup>
+    <ItemGroup Condition="'$(Configuration)' == 'Release'">
+    <PackageReference Include="MicroBootstrap" Version="1.*" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot" />

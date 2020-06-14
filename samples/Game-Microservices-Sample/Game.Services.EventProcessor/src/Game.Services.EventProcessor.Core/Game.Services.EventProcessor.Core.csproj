@@ -2,8 +2,11 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\src\MicroBootstrap.csproj" />
+ <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+    <ProjectReference Include="..\..\..\..\..\src\MicroBootstrap\MicroBootstrap.csproj" />
+  </ItemGroup>
+    <ItemGroup Condition="'$(Configuration)' == 'Release'">
+    <PackageReference Include="MicroBootstrap" Version="1.*" />
   </ItemGroup>
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>

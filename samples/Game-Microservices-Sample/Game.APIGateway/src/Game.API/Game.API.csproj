@@ -9,8 +9,10 @@
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\src\MicroBootstrap.csproj" />
-    <!-- <PackageReference Include="MicroBootstrap_" Version="1.*"/> -->
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
+    <PackageReference Include="MicroBootstrap" Version="1.*" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+    <ProjectReference Include="..\..\..\..\..\src\MicroBootstrap\MicroBootstrap.csproj" />
   </ItemGroup>
 </Project>
