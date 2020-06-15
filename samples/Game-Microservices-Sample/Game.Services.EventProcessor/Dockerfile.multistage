@@ -1,0 +1,14 @@
+# use whole build server in single docker file such as build,test,publish,run...
+
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
+WORKDIR /app
+COPY . .
+RUN dotnet publish src/Game.Services.EventProcessor.API -c Release -o out
+
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
+WORKDIR /app
+COPY --from=build src/Game.Services.EventProcessor.API/out .
+ENV ASPNETCORE_URLS http://*:7001
+ENV ASPNETCORE_ENVIRONMENT docker
+EXPOSE 5000
+ENTRYPOINT dotnet Game.Services.EventProcessor.API.dll
