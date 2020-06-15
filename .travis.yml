@@ -17,7 +17,7 @@ after_success:
   - ./scripts/dotnet-pack-micro-bootstrap.sh
   - ./scripts/dotnet-publish-event-processcor-service.sh
   - ./scripts/dotnet-publish-messaging-service.sh
-  - ./scripts/docker-publish-event-processcor-service.sh
+  - ./scripts/docker-publish-event-processor-service.sh
   - ./scripts/docker-publish-messaging-service.sh
 notifications:
   email:
