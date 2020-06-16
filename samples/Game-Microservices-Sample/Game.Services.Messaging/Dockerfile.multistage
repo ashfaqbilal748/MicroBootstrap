@@ -3,12 +3,12 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /app
 COPY . .
-RUN dotnet publish src/Game.Services.EventProcessor.API -c Release -o out
+RUN dotnet publish src/Game.Services.Messaging.API -c Release -o out
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
-COPY --from=build src/Game.Services.EventProcessor.API/out .
-ENV ASPNETCORE_URLS http://*:7001
+COPY --from=build src/Game.Services.Messaging.API/out .
+ENV ASPNETCORE_URLS http://*:7002
 ENV ASPNETCORE_ENVIRONMENT docker
-EXPOSE 7001
-ENTRYPOINT dotnet Game.Services.EventProcessor.API.dll
+EXPOSE 7002
+ENTRYPOINT dotnet Game.Services.Messaging.API.dll
