@@ -6,5 +6,4 @@
      MYGET_ENV="-dev"
      ;;
  esac
-cd ./src/Game.Services.EventProcessor.API
-dotnet build -c Release --source https://api.nuget.org/v3/index.json --source https://www.myget.org/F/micro-bootstrap$MYGET_ENV/api/v3/index.json
+dotnet build ./src/Game.Services.EventProcessor.API -c Release --source https://api.nuget.org/v3/index.json --source https://www.myget.org/F/micro-bootstrap$MYGET_ENV/api/v3/index.json
