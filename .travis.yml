@@ -9,6 +9,7 @@ branches:
     - develop
 before_script:
   - chmod -R a+x scripts
+  - chmod -R a+x samples
 script:
   - ./scripts/dotnet-build-micro-bootstrap.sh
   - ./samples/Game-Microservices-Sample/Game.Services.EventProcessor/scripts/dotnet-build.sh
