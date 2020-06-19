@@ -135,8 +135,8 @@ volumes:
   #   driver: local
   # grafana:
   #   driver: local
-  # mongo:
-    # driver: local
+  mongo:
+    driver: local
   # prometheus:
   #   driver: local
   # rabbitmq:
