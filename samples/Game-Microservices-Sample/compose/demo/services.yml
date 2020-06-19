@@ -1,30 +1,30 @@
-version: "3.7"
+version: "3.5"
 
 services:
   api:
-    build: ../Game.APIGateway
+    image: mehdihadeli/game.services.api-gateway
     container_name: api
     restart: always
     ports:
-      - 7000:80
+      - 7000:7000
     networks:
       - game
 
   messaging-service:
-    build: ../Game.Services.Messaging
+    image: mehdihadeli/game.services.messaging
     container_name: messaging-service
     restart: always
     ports:
-      - 7002:80 
+      - 7002:7002 
     networks:
       - game
 
   event-processor-service:
-    build: ../Game.Services.EventProcessor
+    image: mehdihadeli/game.services.event-processor
     container_name: event-processor-service
     restart: always
     ports:
-      - 7001:80
+      - 7001:7001
     networks:
       - game
 
