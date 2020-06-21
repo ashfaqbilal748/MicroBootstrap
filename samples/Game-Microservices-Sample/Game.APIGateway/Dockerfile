@@ -3,4 +3,4 @@ WORKDIR /app
 COPY ./src/Game.API/bin/Docker .
 ENV ASPNETCORE_URLS http://*:7001
 ENV ASPNETCORE_ENVIRONMENT docker  
-ENTRYPOINT dotnet Game.Services.EventProcessor.API.dll
+ENTRYPOINT dotnet Game.API.dll
