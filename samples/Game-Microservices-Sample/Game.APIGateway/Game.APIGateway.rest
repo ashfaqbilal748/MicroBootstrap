@@ -1,4 +1,4 @@
-@apiUrl = http://34.70.44.157:7000
+@apiUrl = http://localhost:7000
 @gameEventSourceId = d04ec35e-9e7e-4033-9fa6-76679671d1b3
 
 # ================= API GATEWAY ======================= #
