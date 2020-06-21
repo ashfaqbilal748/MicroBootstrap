@@ -16,6 +16,7 @@ namespace Game.Services.Messaging.Application.Services
             //_jwtHandler = jwtHandler;
         }
 
+
         public async Task InitializeAsync(string token)
         {
             if (string.IsNullOrWhiteSpace(token))
@@ -28,7 +29,7 @@ namespace Game.Services.Messaging.Application.Services
                 // if (payload == null)
                 // {
                 //     await DisconnectAsync();
-                    
+
                 //     return;
                 // }
                 // var group = Guid.Parse(payload.Subject).ToUserGroup();
@@ -39,6 +40,18 @@ namespace Game.Services.Messaging.Application.Services
             {
                 await DisconnectAsync();
             }
+        }
+
+        public override async Task OnConnectedAsync()
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, "SignalR Users");
+            await base.OnConnectedAsync();
+        }
+
+        public override async Task OnDisconnectedAsync(Exception exception)
+        {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, "SignalR Users");
+            await base.OnDisconnectedAsync(exception);
         }
 
         private async Task ConnectAsync()
