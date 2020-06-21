@@ -3,6 +3,7 @@ version: "3.7"
 services:
   api:
     build: ../Game.APIGateway
+    context: ./samples/Game-Microservices-Sample/Game.APIGateway
     container_name: api
     restart: always
     ports:
@@ -12,6 +13,7 @@ services:
 
   messaging-service:
     build: ../Game.Services.Messaging
+    context: ./samples/Game-Microservices-Sample/Game.Services.Messaging
     container_name: messaging-service
     restart: always
     ports:
@@ -20,7 +22,8 @@ services:
       - game
 
   event-processor-service:
-    build: ../Game.Services.EventProcessor
+    build: ../Game.Services.EventProcessor 
+    context: ./samples/Game-Microservices-Sample/Game.Services.EventProcessor
     container_name: event-processor-service
     restart: always
     ports:
