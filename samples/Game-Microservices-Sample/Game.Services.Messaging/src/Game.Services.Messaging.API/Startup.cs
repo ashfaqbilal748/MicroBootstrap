@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using MicroBootstrap;
@@ -94,12 +95,17 @@ namespace Game.Services.Messaging.API
             app.UseInitializers();
             app.UseRouting();
             app.UseAuthorization();
-            app.UseStaticFiles();
+            app.UseDefaultFiles(new DefaultFilesOptions
+            {
+                DefaultFileNames = new
+               List<string> { "signalr/index.html" }
+            }); //set startup url to index static file
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
-                endpoints.MapGet("/", async context =>
-                                     await context.Response.WriteAsync(context.RequestServices.GetService<AppOptions>().Name));
+                 endpoints.MapGet("/service", async context =>
+                                      await context.Response.WriteAsync(context.RequestServices.GetService<AppOptions>().Name));
                 endpoints.MapHealthChecks("/healthz");
                 var signalrOptions = app.ApplicationServices.GetRequiredService<SignalrOptions>();
                 endpoints.MapHub<GameHub>($"/{signalrOptions.Hub}");
