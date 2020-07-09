@@ -102,7 +102,7 @@ namespace Game.Services.Messaging.API
             {
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapGet("/", async context =>
-                                     await context.Response.WriteAsync(context.RequestServices.GetService<AppOptions>().Name));
+                                     await context.Response.WriteAsync(GetHomeHtml(context)));
                 endpoints.MapHealthChecks("/healthz");
                 var signalrOptions = app.ApplicationServices.GetRequiredService<SignalrOptions>();
                 endpoints.MapHub<GameHub>($"/{signalrOptions.Hub}");
@@ -115,7 +115,18 @@ namespace Game.Services.Messaging.API
             {
                 AutofacContainer.Dispose();
             });
-
         }
+        private string GetHomeHtml(HttpContext context)
+        {
+            
+            string hostUrl = $"{context.Request.Scheme}://{context.Request.Host}";
+            string signalrAddress = hostUrl + "/signalr";
+            System.Text.StringBuilder builder = new System.Text.StringBuilder();
+            builder.Append(context.RequestServices.GetService<AppOptions>().Name);
+            builder.Append($"<br><br>signalR-address is: <a href='{signalrAddress}'>{signalrAddress}</a>");
+            var html = $"<html><body>{builder}</body></html>";
+            return html;
+        }
+
     }
 }

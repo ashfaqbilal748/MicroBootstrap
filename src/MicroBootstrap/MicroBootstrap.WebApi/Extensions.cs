@@ -62,7 +62,6 @@ namespace MicroBootstrap.WebApi
         {
             serviceCollection.AddSingleton<IServiceId, ServiceId>();
             serviceCollection.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
             if (string.IsNullOrWhiteSpace(appSectionName))
             {
                 appSectionName = AppsectionName;
