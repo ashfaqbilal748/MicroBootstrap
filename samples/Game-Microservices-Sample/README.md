@@ -1,4 +1,4 @@
-**How to start?**
+**How to start with Docker Compose?**
 ----------------
 
 Open `samples\Game-Microservices-Sample\deployments\docker-compose` directory and execute:
