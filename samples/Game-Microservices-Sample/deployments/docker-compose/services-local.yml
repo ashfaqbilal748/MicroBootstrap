@@ -2,8 +2,9 @@ version: "3.7"
 
 services:
   api:
-    build: ../Game.APIGateway
-    context: ../Game.APIGateway
+    build: 
+      context: ../../Game.APIGateway
+      dockerfile: Dockerfile.multistage
     container_name: api
     restart: always
     ports:
@@ -11,25 +12,28 @@ services:
     networks:
       - game
 
-  messaging-service:
-    build: ../Game.Services.Messaging
-    context: ../Game.Services.Messaging
-    container_name: messaging-service
-    restart: always
-    ports:
-      - 7002:7002 
-    networks:
-      - game
+  # messaging-service:
+    # build: 
+      # context: ../../Game.Services.Messaging
+      # dockerfile: Dockerfile.multistage
+    # container_name: messaging-service
+    # restart: always
+    # ports:
+      # - 7002:7002 
+    # networks:
+      # - game
 
-  event-processor-service:
-    build: ../Game.Services.EventProcessor 
-    context: ../Game.Services.EventProcessor
-    container_name: event-processor-service
-    restart: always
-    ports:
-      - 7001:7001
-    networks:
-      - game
+  # event-processor-service:
+    # build: 
+      # context: ../../Game.Services.EventProcessor 
+      # dockerfile: Dockerfile.multistage
+    # container_name: event-processor-service
+    # restart: always
+    # ports:
+      # - 7001:7001
+    # networks:
+      # - game
+
 
 networks:
   game:
