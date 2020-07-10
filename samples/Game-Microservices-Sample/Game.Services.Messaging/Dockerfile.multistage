@@ -7,7 +7,7 @@ RUN dotnet publish ./src/Game.Services.Messaging.API -c Release -o ./bin/Docker
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
-COPY --from=build ./src/Game.Services.Messaging.API/bin/Docker .
+COPY --from=build /app/bin/Docker .
 ENV ASPNETCORE_URLS http://*:7002
 ENV ASPNETCORE_ENVIRONMENT docker
 EXPOSE 7002

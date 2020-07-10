@@ -7,7 +7,7 @@ RUN dotnet publish ./src/Game.Services.EventProcessor.API -c Release -o ./bin/Do
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
-COPY --from=build ./src/Game.Services.EventProcessor.API/bin/Docker .
+COPY --from=build /app/bin/Docker .
 ENV ASPNETCORE_URLS http://*:7001
 ENV ASPNETCORE_ENVIRONMENT docker
 EXPOSE 7001

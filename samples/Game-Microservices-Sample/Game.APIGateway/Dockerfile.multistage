@@ -5,7 +5,7 @@ COPY . .
 RUN dotnet publish ./src/Game.API -c Release -o ./bin/Docker 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
-COPY --from=build /app/bin/Docker .
+COPY --from=build /app/bin/Docker  .
 ENV ASPNETCORE_URLS http://*:7000
 ENV ASPNETCORE_ENVIRONMENT docker
 EXPOSE 7000
