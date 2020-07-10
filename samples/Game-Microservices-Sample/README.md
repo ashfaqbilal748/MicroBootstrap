@@ -20,7 +20,7 @@ docker-compose -f services.yml up
 
 **How to start with Kubernetes?**
 ----------------
-Open `samples\Game-Microservices-Sample\deployments\k8s` directory, in this directory there are two folder [infrastructure](https://github.com/mehdihadeli/MicroBootstrap/tree/master/samples/Game-Microservices-Sample/deployments/k8s/infrastructure) and [micro-services](https://github.com/mehdihadeli/MicroBootstrap/tree/master/samples/Game-Microservices-Sample/deployments/k8s/micro-services). in `infrastructure` folder exits all needed infrastructure for executing our microservices that we use `kubectl apply` for running them. for example for running mongodb on our cluster we sholud use these commands:
+Open `samples\Game-Microservices-Sample\deployments\k8s` directory, in this directory there are two folder [infrastructure](https://github.com/mehdihadeli/MicroBootstrap/tree/master/samples/Game-Microservices-Sample/deployments/k8s/infrastructure) and [micro-services](https://github.com/mehdihadeli/MicroBootstrap/tree/master/samples/Game-Microservices-Sample/deployments/k8s/micro-services). in `infrastructure` folder exits all needed infrastructure for executing our microservices that we use `kubectl apply` for running them. for example for running `mongodb` on our cluster we sholud use these commands:
 
 ```
 kubectl apply -f mongo-persistentvolumeclaim.yaml
