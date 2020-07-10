@@ -18,6 +18,22 @@ or using pre-build docker images in docker hub with using this docker compose:
 docker-compose -f services.yml up
 ```
 
+**How to start with Kubernetes?**
+----------------
+Open `samples\Game-Microservices-Sample\deployments\k8s` directory, in this directory there are two folder [infrastructure](https://github.com/mehdihadeli/MicroBootstrap/tree/master/samples/Game-Microservices-Sample/deployments/k8s/infrastructure) and [micro-services](https://github.com/mehdihadeli/MicroBootstrap/tree/master/samples/Game-Microservices-Sample/deployments/k8s/micro-services). in `infrastructure` folder exits all needed infrastructure for executing our microservices that we use `kubectl apply` for running them. for example for running mongodb on our cluster we sholud use these commands:
+
+```
+kubectl apply -f mongo-persistentvolumeclaim.yaml
+kubectl apply -f mongo-deployment.yaml
+kubectl apply -f mongo-service.yaml
+```
+In `micro-services` folder there are our services. for running our services on our cluster we should `kubectl apply` command for example:
+
+```
+kubectl apply -f messaging-service-deployment.yaml
+kubectl apply -f messaging-service-service.yaml
+```
+
 **What HTTP requests can be sent to the API?**
 ----------------
 
