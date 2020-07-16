@@ -15,7 +15,7 @@ services:
   fabio:
     image: fabiolb/fabio
     container_name: fabio
-    restart: unless-stopped
+    restart: always
     environment:
     - FABIO_REGISTRY_CONSUL_ADDR=consul:8500
     networks:
