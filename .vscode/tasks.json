@@ -1,73 +1,97 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "build",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "build",
-                "${workspaceFolder}/Game.sln",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "publish",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "publish",
-                "${workspaceFolder}/Game.APIGateway/src/Game.API/Game.API.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        // https://docs.microsoft.com/en-us/aspnet/core/tutorials/dotnet-watch?view=aspnetcore-3.1
-        {
-            "label": "watch-api-gateway",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "watch",
-                "--project",
-                "${workspaceFolder}/Game.APIGateway/src/Game.API",
-                "build",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile",
-        },
-        {
-            "label": "watch-event-processor",
-            "command": "dotnet",
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/MicroBootstrap.sln",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "build-game-api-release",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/samples/Game-Microservices-Sample/Game.APIGateway",
+        "-c",
+        "Release"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+        "label": "build-game-api-debug",
+        "command": "dotnet",
+        "type": "process",
+        "args": [
+          "build",
+          "${workspaceFolder}/samples/Game-Microservices-Sample/Game.APIGateway",
+          "-c",
+          "Debug"
+        ],
+        "problemMatcher": "$msCompile"
+      },
+    {
+      "label": "publish",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "publish",
+        "${workspaceFolder}/Game.APIGateway/src/Game.API/Game.API.csproj",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    // https://docs.microsoft.com/en-us/aspnet/core/tutorials/dotnet-watch?view=aspnetcore-3.1
+    {
+      "label": "watch-api-gateway",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "watch",
+        "--project",
+        "${workspaceFolder}/Game.APIGateway/src/Game.API",
+        "build",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "watch-event-processor",
+      "command": "dotnet",
 
-            "type": "process",
-            "args": [
-                "watch",
-                "--project",
-                "${workspaceFolder}/Game.Services.EventProcessor/src/Game.Services.EventProcessor.API",
-                "build",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "watch-messaging",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "watch",
-                "--project",
-                "${workspaceFolder}/Game.Services.Messaging/src/Game.Services.Messaging.API",
-                "build",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-    ]
+      "type": "process",
+      "args": [
+        "watch",
+        "--project",
+        "${workspaceFolder}/Game.Services.EventProcessor/src/Game.Services.EventProcessor.API",
+        "build",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "watch-messaging",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "watch",
+        "--project",
+        "${workspaceFolder}/Game.Services.Messaging/src/Game.Services.Messaging.API",
+        "build",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "problemMatcher": "$msCompile"
+    }
+  ]
 }

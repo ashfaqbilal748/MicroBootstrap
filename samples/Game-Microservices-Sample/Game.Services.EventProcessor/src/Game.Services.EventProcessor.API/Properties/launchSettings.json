@@ -25,6 +25,15 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
-    }
+    },
+    "Game.Services.EventProcessor.API.Docker": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "",
+      "applicationUrl": "http://localhost:7001",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Docker"
+      }
+    },
   }
 }
