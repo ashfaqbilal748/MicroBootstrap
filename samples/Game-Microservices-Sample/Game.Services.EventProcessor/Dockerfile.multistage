@@ -3,7 +3,8 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /app
 COPY . .
-RUN dotnet publish ./src/Game.Services.EventProcessor.API -c Release -o ./bin/Docker  --source https://api.nuget.org/v3/index.json --source https://www.myget.org/F/micro-bootstrap/api/v3/index.json
+RUN dotnet build -c Release ./src/Game.Services.EventProcessor.API/Game.Services.EventProcessor.API.csproj --source https://api.nuget.org/v3/index.json --source https://www.myget.org/F/micro-bootstrap/api/v3/index.json
+RUN dotnet publish ./src/Game.Services.EventProcessor.API -c Release -o ./bin/Docker 
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app

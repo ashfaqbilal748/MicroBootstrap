@@ -31,4 +31,4 @@ services:
 networks:
   game:
     name: game-network
-    external: false
+    external: true

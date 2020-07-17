@@ -9,8 +9,8 @@ services:
     restart: always
     ports:
       - 7000:7000
-    networks:
-      - game
+    # networks:
+      # - game
 
   messaging-service:
     build: 
@@ -20,8 +20,8 @@ services:
     restart: always
     ports:
       - 7002:7002 
-    networks:
-      - game
+    # networks:
+      # - game
 
   event-processor-service:
     build: 
@@ -31,10 +31,10 @@ services:
     restart: always
     ports:
       - 7001:7001
-    networks:
-      - game
+    # networks:
+      # - game
 
-networks:
-  game:
-    name: game-network
-    external: true
+# networks:
+  # game:
+    # name: game-network
+    # external: true

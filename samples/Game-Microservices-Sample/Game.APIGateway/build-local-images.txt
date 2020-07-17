@@ -1,0 +1,2 @@
+docker build --tag api:local -f ./Dockerfile.multistage .
+docker run api:local
