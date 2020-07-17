@@ -1,11 +1,8 @@
 using System;
-using MicroBootstrap.Jaeger.Tracers;
 using MicroBootstrap.RabbitMq.Processors;
 using MicroBootstrap.Redis;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OpenTracing;
 using RawRabbit;
 using RawRabbit.Common;
 using RawRabbit.Configuration;
@@ -81,7 +78,6 @@ namespace MicroBootstrap.RabbitMq
                 var options = serviceProvider.GetService<RabbitMqOptions>();
                 var configuration = serviceProvider.GetService<RawRabbitConfiguration>();
                 var namingConventions = new CustomNamingConventions(options);
-                var tracer = serviceProvider.GetService<ITracer>();
                 var register = plugins?.Invoke(new RabbitMqPluginRegister(serviceProvider));
 
                 return RawRabbitFactory.CreateInstanceFactory(new RawRabbitOptions

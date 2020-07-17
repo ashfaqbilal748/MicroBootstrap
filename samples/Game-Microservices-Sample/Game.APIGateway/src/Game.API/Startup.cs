@@ -44,8 +44,8 @@ namespace Game.API
             services.AddSwaggerDocs();
             services.AddConsul();
             //services.AddJwt();
-            services.AddJaeger();
-            services.AddOpenTracing();
+            // services.AddJaeger();
+            // services.AddOpenTracing();
             services.AddRedis();
             services.AddRabbitMq();
             // services.AddAuthorization(x => x.AddPolicy("admin", p => p.RequireRole("admin")));
