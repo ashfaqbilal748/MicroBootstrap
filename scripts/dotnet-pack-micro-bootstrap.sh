@@ -20,10 +20,10 @@ echo Uploading MicroBootstrap package to Nuget using branch $TRAVIS_BRANCH
 
 case "$TRAVIS_BRANCH" in
   "master")
-    dotnet nuget push *.nupkg -k $NUGET_API_KEY
+    dotnet nuget push *.nupkg -k $NUGET_API_KEY -s https://api.nuget.org/v3/index.json
     ;;
   "develop")
-    dotnet nuget push *-dev.nupkg -k $NUGET_API_KEY 
+    dotnet nuget push *-dev.nupkg -k $NUGET_API_KEY -s https://api.nuget.org/v3/index.json
     ;;    
 esac
 
