@@ -1,4 +1,5 @@
 # MicroBootstrap
 MicroBootstrap is a framework for quickly creating microservices on .NET Core
 
-[![Build Status](https://travis-ci.org/mehdihadeli/MicroBootstrap.svg?branch=master)](https://travis-ci.org/mehdihadeli/MicroBootstrap)
+![Travis (.org) branch](https://img.shields.io/travis/mehdihadeli/MicroBootstrap/master?style=for-the-badge)
+![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/MicroBootstrap?style=for-the-badge)
