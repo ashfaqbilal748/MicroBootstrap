@@ -26,17 +26,17 @@
       "problemMatcher": "$msCompile"
     },
     {
-        "label": "build-game-api-debug",
-        "command": "dotnet",
-        "type": "process",
-        "args": [
-          "build",
-          "${workspaceFolder}/samples/Game-Microservices-Sample/Game.APIGateway",
-          "-c",
-          "Debug"
-        ],
-        "problemMatcher": "$msCompile"
-      },
+      "label": "build-game-api-debug",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/samples/Game-Microservices-Sample/Game.APIGateway",
+        "-c",
+        "Debug"
+      ],
+      "problemMatcher": "$msCompile"
+    },
     {
       "label": "publish",
       "command": "dotnet",
@@ -49,7 +49,6 @@
       ],
       "problemMatcher": "$msCompile"
     },
-    // https://docs.microsoft.com/en-us/aspnet/core/tutorials/dotnet-watch?view=aspnetcore-3.1
     {
       "label": "watch-api-gateway",
       "command": "dotnet",
@@ -67,7 +66,6 @@
     {
       "label": "watch-event-processor",
       "command": "dotnet",
-
       "type": "process",
       "args": [
         "watch",
@@ -92,6 +90,62 @@
         "/consoleloggerparameters:NoSummary"
       ],
       "problemMatcher": "$msCompile"
+    },
+    {
+      "type": "docker-build",
+      "label": "docker-build-Game.APIGateway: debug",
+      "dependsOn": [
+        "build-game-api-debug"
+      ],
+      "dockerBuild": {
+        "tag": "api:local",
+        "dockerfile": "${workspaceFolder}/samples/Game-Microservices-Sample/Game.APIGateway/Dockerfile",
+        "context": "${workspaceFolder}/samples/Game-Microservices-Sample/Game.APIGateway",
+        "pull": true
+      },
+      "netCore": {
+        "appProject": "${workspaceFolder}/samples/Game-Microservices-Sample/Game.APIGateway/src/Game.API/Game.API.csproj"
+      }
+    },
+    {
+      "type": "docker-build",
+      "label": "docker-build-Game.APIGateway: release",
+      "dependsOn": [
+        "build-game-api-debug-release"
+      ],
+      "dockerBuild": {
+        "tag": "api:local",
+        "dockerfile": "${workspaceFolder}/samples/Game-Microservices-Sample/Game.APIGateway/Dockerfile",
+        "context": "${workspaceFolder}/samples/Game-Microservices-Sample/Game.APIGateway",
+        "pull": false
+      },
+      "netCore": {
+        "appProject": "${workspaceFolder}/samples/Game-Microservices-Sample/Game.APIGateway/src/Game.API/Game.API.csproj"
+      }
+    },
+    {
+      "type": "docker-run",
+      "label": "docker-run-Game.APIGateway: debug",
+    
+      "dependsOn": [
+        "docker-build-Game.APIGateway: debug"
+      ],
+      "dockerRun": {},
+      "netCore": {
+        "appProject": "${workspaceFolder}/samples/Game-Microservices-Sample/Game.APIGateway/src/Game.API/Game.API.csproj",
+        "enableDebugging": true
+      }
+    },
+    {
+      "type": "docker-run",
+      "label": "docker-run-Game.APIGateway: release",
+      "dependsOn": [
+        "docker-build-Game.APIGateway: release"
+      ],
+      "dockerRun": {},
+      "netCore": {
+        "appProject": "${workspaceFolder}/samples/Game-Microservices-Sample/Game.APIGateway/src/Game.API/Game.API.csproj"
+      }
     }
   ]
 }
