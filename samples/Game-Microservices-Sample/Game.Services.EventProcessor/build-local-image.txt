@@ -1,7 +1,0 @@
-docker build --tag api:local -f ./Dockerfile.multistage .
-
----------------------------------------------------
-dotnet publish src/Game.Services.EventProcessor.API -c Release -o src/Game.Services.EventProcessor.API/bin/Docker
-docker build --tag event-processor-service:local  -f ./Dockerfile .
---------------------------------------------------
-docker run --network=game-network --name=event-processor-service event-processor-service:local 

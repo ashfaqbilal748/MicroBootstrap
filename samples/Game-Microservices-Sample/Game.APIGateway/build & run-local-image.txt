@@ -4,4 +4,4 @@ docker build --tag api:local -f ./Dockerfile.multistage .
 dotnet publish src/Game.API -c Release -o src/Game.API/bin/Docker
 docker build --tag api:local -f ./Dockerfile .
 --------------------------------------------------
-docker run --network=game-network --name=api_service api:local -p 7000:7000 
+docker run --network=game-network -p 7000:7000 --name=api api:local 
