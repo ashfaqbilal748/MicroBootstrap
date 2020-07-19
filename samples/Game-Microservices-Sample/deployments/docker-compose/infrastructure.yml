@@ -129,6 +129,7 @@ services:
 networks:
   game:
     name: game-network
+    external: false
 
 volumes:
   # consul:
