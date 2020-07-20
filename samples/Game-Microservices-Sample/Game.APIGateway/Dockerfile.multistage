@@ -1,7 +1,7 @@
 # use whole build server in single docker file such as build,test,publish,run...
 # https://hub.docker.com/_/microsoft-dotnet-core
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
-WORKDIR /
+WORKDIR /app
 
 # copy csproj and restore as distinct layers
 COPY *.sln .
@@ -13,12 +13,12 @@ RUN dotnet restore -r linux-x64 --configfile nuget.config
 # copy everything else and build app
 COPY src/. ./src/
 WORKDIR /src/Game.API
-RUN dotnet publish -c release -o ./app/bin/Docker  -r linux-x64 --self-contained false --no-restore
+RUN dotnet publish -c release -o ./bin/Docker  -r linux-x64 --self-contained false --no-restore
 
 # final stage/image
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-bionic
 WORKDIR /app
-COPY --from=build /app/bin/Docker ./
+COPY --from=build /app/src/Game.API/bin/Docker ./
 ENV ASPNETCORE_URLS http://*:7000
 ENV ASPNETCORE_ENVIRONMENT docker  
 ENTRYPOINT dotnet Game.API.dll
