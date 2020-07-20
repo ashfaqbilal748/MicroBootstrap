@@ -5,7 +5,7 @@ WORKDIR /
 
 # copy csproj and restore as distinct layers
 COPY *.sln .
-COPY NuGet.Config /
+COPY NuGet.Config .
 COPY NuGet.Config /root/.nuget/NuGet/
 COPY ./src/Game.API/*.csproj ./src/Game.API/
 ENV Configuration Release
