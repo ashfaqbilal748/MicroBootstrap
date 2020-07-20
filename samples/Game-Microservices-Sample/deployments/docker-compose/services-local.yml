@@ -9,32 +9,31 @@ services:
     restart: always
     ports:
       - 7000:7000
-    # networks:
-      # - game
+    networks:
+      - game
 
   messaging-service:
     build: 
       context: ../../Game.Services.Messaging
       dockerfile: Dockerfile.multistage
-    container_name: messaging-service
+    container_name: game-messaging-service
     restart: always
     ports:
       - 7002:7002 
-    # networks:
-      # - game
+    networks:
+      - game
 
   event-processor-service:
     build: 
       context: ../../Game.Services.EventProcessor 
       dockerfile: Dockerfile.multistage
-    container_name: event-processor-service
+    container_name: game-event-processor-service
     restart: always
     ports:
       - 7001:7001
-    # networks:
-      # - game
-
-# networks:
-  # game:
-    # name: game-network
-    # external: true
+    networks:
+      - game
+networks:
+  game:
+    name: game-network
+    external: true
