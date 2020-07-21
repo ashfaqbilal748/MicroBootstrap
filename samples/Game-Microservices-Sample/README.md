@@ -14,6 +14,27 @@ In this sample we have a simple microservices project based on our [MicroBootstr
  
  ![Game](https://github.com/mehdihadeli/MicroBootstrap/blob/master/samples/Game-Microservices-Sample/image.jpg?raw=true)
  
+**Thecnologies**
+----------------
+* .Net Core 3.1
+* RabbitMQ
+* MongoDB
+* Docker
+* RESTEeas
+* Consul
+* Fabio
+* Kubernetes
+* Docker
+* Redis
+* Vault
+* Jaeger
+* Prometheus
+* DDD
+* Clean Architecture
+* SignalR
+* Seq
+* Serilog
+
 
 **How to start with Docker Compose?**
 ----------------
@@ -60,6 +81,10 @@ kubectl apply -f messaging-service-service.yaml
 You can find the list of all HTTP requests in [Game.APIGateway.rest](https://github.com/mehdihadeli/MicroBootstrap/blob/master/samples/Game-Microservices-Sample/Game.APIGateway/Game.APIGateway.rest) file placed in the root folder of [Game.APIGateway](https://github.com/mehdihadeli/MicroBootstrap/tree/master/samples/Game-Microservices-Sample/Game.APIGateway).
 This file is compatible with [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) plugin for [Visual Studio Code](https://code.visualstudio.com).
 
+
+**Future Works**
+----------------
+-  [ ] Integration with Service Mesh and Istio
 
 **CI/CD**
 ----------------
