@@ -11,6 +11,11 @@ In this sample we have a simple microservices project based on our [MicroBootstr
  
  `Game.Services.Messaging` is a service that uses SignalR and consumes `GameEventSourceAdded` event from the message broker and writes the event data that is our created game event source to the browser in this address [http://localhost:7002/signalr/index.html](http://localhost:7002/signalr/index.html).
  
+ **Scaling Microservices**
+ ----------------
+ For scaling microservice in this project we have 2 option:
+ * Using Consul and Fabio: for scaling our microservices we can use of consul and fabio and use of a customize algorithm for load balancing
+ * Using Kubernetes: use of kubernetes for scaling but kubernetes limted to round robin aprouch for load balancing
  
  ![Game](https://github.com/mehdihadeli/MicroBootstrap/blob/master/samples/Game-Microservices-Sample/image.jpg?raw=true)
  
