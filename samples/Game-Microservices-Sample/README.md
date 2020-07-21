@@ -12,7 +12,7 @@ In this sample we have a simple microservices project based on our [MicroBootstr
  `Game.Services.Messaging` is a service that uses SignalR and consumes `GameEventSourceAdded` event from the message broker and writes the event data that is our created game event source to the browser in this address [http://localhost:7002/signalr/index.html](http://localhost:7002/signalr/index.html).
  
  
- ![alt text](https://github.com/mehdihadeli/MicroBootstrap/blob/master/image.jpg?raw=true)
+ ![Game](https://github.com/mehdihadeli/MicroBootstrap/blob/master/samples/Game-Microservices-Sample/image.jpg?raw=true)
  
 
 **How to start with Docker Compose?**
