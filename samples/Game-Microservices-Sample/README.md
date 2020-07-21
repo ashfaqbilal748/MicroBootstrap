@@ -5,14 +5,14 @@ In this sample we have a simple microservices project based on our [MicroBootstr
 * [Game.Services.EventProcessor](https://github.com/mehdihadeli/MicroBootstrap/tree/master/samples/Game-Microservices-Sample/Game.Services.EventProcessor)
 * [Game.Services.Messaging](https://github.com/mehdihadeli/MicroBootstrap/tree/master/samples/Game-Microservices-Sample/Game.Services.Messaging)
  
- `Game.APIGateway` is our API Gateway of our microservices and it will manage and route our request to appropriate end-points in other microservices. in this API Gateway we use different technologies like [Consul](https://www.consul.io/), [Fabio](https://fabiolb.net/) for service discovery and load-balancing (we can turn them off in our appsettings when we use Kubernetes) and [RabbitMQ](https://www.rabbitmq.com/) for our message broker, [RESTEeas](https://github.com/canton7/RestEase) for Http calls, [Jaeger](https://www.jaegertracing.io/) for distributed tracing, [Seq](https://datalust.co/) and [Serilog](https://serilog.net/) for logging purpose, [Vault](https://www.vaultproject.io/) for security and key management, [Prometheus](https://prometheus.io/) for monitoring and MongoDB and Redis for our storage system. this service will be available in this address [http://localhost:7000](http://localhost:7000).
+ `Game.APIGateway` is our API Gateway of our microservices and it will manage and route our request to appropriate end-points in other microservices. in this API Gateway we use different technologies like [Consul](https://www.consul.io/), [Fabio](https://fabiolb.net/) for service discovery and load-balancing (we can turn them off in our appsettings when we use Kubernetes) and [RabbitMQ](https://www.rabbitmq.com/) for our message broker, [RESTEeas](https://github.com/canton7/RestEase) for Http calls, [Jaeger](https://www.jaegertracing.io/) for distributed tracing, [Seq](https://datalust.co/) and [Serilog](https://serilog.net/) for logging purpose, [Vault](https://www.vaultproject.io/) for security and key management, [Prometheus](https://prometheus.io/) for monitoring and [MongoDB](https://www.mongodb.com/) and [Redis](https://redis.io/) for our storage system. this service will be available in this address [http://localhost:7000](http://localhost:7000).
  
  `Game.Services.EventProcessor` is a service for processing commands that send on the message broker. for example in this sample in our `API Gateway` wen publish an `AddGameEventSource` command to the broker for creating a game event source. `Game Event Processor` service that subscribed to this command (AddGameEventSource) consumes this command from the message broker and will execute its command handler for this command and store this game event source in MongoDB. then this handler in the final step will publish a `GameEventSourceAdded` event to message broker. this service will be available in this address [http://localhost:7001](http://localhost:7001)
  
  `Game.Services.Messaging` is a service that uses SignalR and consumes `GameEventSourceAdded` event from the message broker and writes the event data that is our created game event source to the browser in this address [http://localhost:7002/signalr/index.html](http://localhost:7002/signalr/index.html).
  
  
- ![alt text](https://github.com/mehdihadeli/MicroBootstrap/blob/master/image.jpg?raw=true)
+ ![Game](https://github.com/mehdihadeli/MicroBootstrap/blob/master/samples/Game-Microservices-Sample/image.jpg?raw=true)
  
 
 **How to start with Docker Compose?**
@@ -38,6 +38,8 @@ docker-compose -f services.yml up
 
 **How to start with Kubernetes?**
 ----------------
+For setup your local environment for using kubernetes you can use different approuch but I personally perfer to use [K3s](https://k3s.io/) from rancher team, it is awsome like [rancher](https://rancher.com/) for kubernetes management :)        
+
 Open `samples\Game-Microservices-Sample\deployments\k8s` directory, in this directory, there are two folders [infrastructure](https://github.com/mehdihadeli/MicroBootstrap/tree/master/samples/Game-Microservices-Sample/deployments/k8s/infrastructure) and [micro-services](https://github.com/mehdihadeli/MicroBootstrap/tree/master/samples/Game-Microservices-Sample/deployments/k8s/micro-services). in `infrastructure` folder exits all needed infrastructure for executing our microservices that we use `kubectl apply` for running them. for example for running `mongodb` on our cluster we should use these commands:
 
 ```
