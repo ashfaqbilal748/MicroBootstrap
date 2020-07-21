@@ -33,6 +33,7 @@ In this sample we have a simple microservices project based on our [MicroBootstr
 * Redis
 * Vault
 * Jaeger
+* OpenTracing
 * Prometheus
 * DDD
 * Clean Architecture
