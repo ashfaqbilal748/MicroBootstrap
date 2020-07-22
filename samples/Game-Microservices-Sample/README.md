@@ -17,7 +17,9 @@ In this sample we have a simple microservices project based on our [MicroBootstr
  ----------------
  For scaling microservice in this project we have 2 option:
  * Using Consul and Fabio: for scaling our microservices we can use of consul and fabio and use of a customize algorithm for load balancing
- * Using Kubernetes: use of kubernetes for scaling but kubernetes limted to round robin aprouch for load balancing
+ * Using Kubernetes: use of kubernetes for scaling but kubernetes limted to round robin aprouch for load balancing      
+ 
+ For `load testing` we can use different tools but I use this tool [NBomber](https://nbomber.com/). you can use visual studio load test project or other solutions.
  
 **Thecnologies**
 ----------------
