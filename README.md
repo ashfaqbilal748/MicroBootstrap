@@ -29,8 +29,9 @@ MicroBootstrap is a framework for quickly creating microservices on .NET Core
 **Future Works**
 ----------------
 -  [ ] Integration with Service Mesh and Istio
--  [ ] Integration with Marten
+-  [ ] Integration with Marten and Event Sourcing
 -  [ ] Integration with MediateR
+-  [ ] Integration with Kafka
 
 **CI/CD**
 ----------------
