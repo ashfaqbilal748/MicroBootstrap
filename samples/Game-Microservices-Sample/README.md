@@ -11,9 +11,38 @@ In this sample we have a simple microservices project based on our [MicroBootstr
  
  `Game.Services.Messaging` is a service that uses SignalR and consumes `GameEventSourceAdded` event from the message broker and writes the event data that is our created game event source to the browser in this address [http://localhost:7002/signalr/index.html](http://localhost:7002/signalr/index.html).
  
- 
  ![Game](https://github.com/mehdihadeli/MicroBootstrap/blob/master/samples/Game-Microservices-Sample/image.jpg?raw=true)
  
+ **Scaling Microservices**
+ ----------------
+ For scaling microservice in this project we have 2 option:
+ * Using Consul and Fabio: for scaling our microservices we can use of consul and fabio and use of a customize algorithm for load balancing
+ * Using Kubernetes: use of kubernetes for scaling but kubernetes limted to round robin aprouch for load balancing      
+ 
+ For `load testing` we can use different tools but I use this tool [NBomber](https://nbomber.com/). you can use visual studio load test project or other solutions.
+ 
+**Thecnologies**
+----------------
+* .Net Core 3.1
+* RabbitMQ
+* MongoDB
+* Docker
+* RESTEeas
+* Consul
+* Fabio
+* Kubernetes
+* Docker
+* Redis
+* Vault
+* Jaeger
+* OpenTracing
+* Prometheus
+* DDD
+* Clean Architecture
+* SignalR
+* Seq
+* Serilog
+
 
 **How to start with Docker Compose?**
 ----------------
@@ -58,4 +87,14 @@ kubectl apply -f messaging-service-service.yaml
 ----------------
 
 You can find the list of all HTTP requests in [Game.APIGateway.rest](https://github.com/mehdihadeli/MicroBootstrap/blob/master/samples/Game-Microservices-Sample/Game.APIGateway/Game.APIGateway.rest) file placed in the root folder of [Game.APIGateway](https://github.com/mehdihadeli/MicroBootstrap/tree/master/samples/Game-Microservices-Sample/Game.APIGateway).
-This file is compatible with [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) plugin for [Visual Studio Code](https://code.visualstudio.com). 
+This file is compatible with [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) plugin for [Visual Studio Code](https://code.visualstudio.com).
+
+
+**Future Works**
+----------------
+-  [ ] Integration with Service Mesh and Istio
+
+**CI/CD**
+----------------
+ 
+ ![CI/CD](https://github.com/mehdihadeli/MicroBootstrap/blob/master/samples/Game-Microservices-Sample/ci-cd.png?raw=true)
