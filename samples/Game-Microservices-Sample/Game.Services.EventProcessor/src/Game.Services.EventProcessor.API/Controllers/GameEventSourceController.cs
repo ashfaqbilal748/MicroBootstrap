@@ -7,6 +7,7 @@ using Game.Services.EventProcessor.Core.DTO;
 using Game.Services.EventProcessor.Core.Messages.Commands;
 using Game.Services.EventProcessor.Core.Messages.Queries;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Game.Services.EventProcessor.API.Controllers
 {
@@ -28,7 +29,7 @@ namespace Game.Services.EventProcessor.API.Controllers
         [HttpPost]
         public async Task<ActionResult> Post(AddGameEventSource command)
         {
-            await SendAsync(command.BindId(c => c.Id));
+            await SendAsync(command.Bind(c => c.Id, command.Id == default ? Guid.NewGuid() : command.Id));
             return Accepted();
         }
     }
