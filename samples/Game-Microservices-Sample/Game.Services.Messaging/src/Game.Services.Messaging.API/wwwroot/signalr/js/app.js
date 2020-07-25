@@ -22,7 +22,7 @@
   };
 
   connection.on("user_leader_board_info_added", (operation) => {
-    appendMessage("Game Event Source Added.", "success", operation);
+    appendMessage("User Leader Board Info Added", "success", operation);
   });
 
   function appendMessage(message, type, data) {
