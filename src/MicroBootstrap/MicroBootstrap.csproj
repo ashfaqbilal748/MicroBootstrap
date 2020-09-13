@@ -12,10 +12,10 @@
     <PackageIconFullPath>$(MSBuildThisFileDirectory)icon.png</PackageIconFullPath>
     <PackageProjectUrl>https://github.com/mehdihadeli/MicroBootstrap</PackageProjectUrl>
     <PublishRepositoryUrl>true</PublishRepositoryUrl> 
+    <RepositoryUrl>https://github.com/mehdihadeli/MicroBootstrap.git</RepositoryUrl>
     <RootNamespace>MicroBootstrap</RootNamespace>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageTags>.net;.net core;boilerplate;application framework;web framework;framework;domain driven design;microservices;cqrs;rabbitmq;microservices framework;clean architecture</PackageTags>
+    <PackageTags>'.net;c#;dotnet;dotnetcore;aspnetcore; boilerplate; application-framework; web-framework; framework;webapi; domain-driven-design;architecture;microservices;cqrs; rabbitmQ; microservices-framework; clean-architecture;docker;kubernetes;</PackageTags>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <Deterministic>true</Deterministic>
     <BaselineAllAPICompatError>true</BaselineAllAPICompatError>
@@ -41,7 +41,7 @@
     <PackageLicenseExpression></PackageLicenseExpression>
     <PackageIconUrl>https://github.com/mehdihadeli/MicroBootstrap/blob/master/src/MicroBootstrap/icon.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/mehdihadeli/MicroBootstrap</PackageProjectUrl>
-    <PackageTags>.Net;.Net Core; Coilerplate; Application Framework; Web Framework; Framework; Domain Driven Design; Microservices; CQRS; RabbitMQ; Microservices Framework; Clean Architecture</PackageTags>
+    <PackageTags>'.net;c#;dotnet;dotnetcore;aspnetcore; boilerplate; application-framework; web-framework; framework;webapi; domain-driven-design;architecture;microservices;cqrs; rabbitmQ; microservices-framework; clean-architecture;docker;kubernetes;</PackageTags>
     <PackageReleaseNotes>See https://github.com/mehdihadeli/MicroBootstrap/blob/master/README.md for details</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
