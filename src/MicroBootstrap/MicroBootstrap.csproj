@@ -4,18 +4,45 @@
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <ExcludeGeneratedDebugSymbol>False</ExcludeGeneratedDebugSymbol>
     <AssemblyName>MicroBootstrap</AssemblyName>
+    <Authors>Mehdei Hadeli</Authors>
     <Summary>MicroBootstrap is a framework for quickly and conveniently creating microservices on .NET Core.</Summary>
     <Description>MicroBootstrap is a framework for quickly and conveniently creating microservices on .NET Core.</Description>
     <PackageId>MicroBootstrap</PackageId>
-    <Icon>https://github.com/mehdihadeli/MicroBootstrap/tree/master/src/MicroBootstrap/icon.png?raw=true</Icon>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageIconFullPath>$(MSBuildThisFileDirectory)icon.png</PackageIconFullPath>
     <PackageProjectUrl>https://github.com/mehdihadeli/MicroBootstrap</PackageProjectUrl>
-    <MinVerTagPrefix>v</MinVerTagPrefix>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl> 
+    <RootNamespace>MicroBootstrap</RootNamespace>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>.net;.net core;boilerplate;application framework;web framework;framework;domain driven design;microservices;cqrs;rabbitmq;microservices framework;clean architecture</PackageTags>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <Deterministic>true</Deterministic>
     <BaselineAllAPICompatError>true</BaselineAllAPICompatError>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Label="SourceLink">
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(PackageIconFullPath)" Pack="true" PackagePath="\"/>
+  </ItemGroup>
+  <ItemGroup Label="SourceLink">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+   <PropertyGroup Label="NuspecProperties">
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <AssemblyTitle>MicroBootstrap</AssemblyTitle>
+    <PackageLicenseExpression></PackageLicenseExpression>
+    <PackageIconUrl>https://github.com/mehdihadeli/MicroBootstrap/blob/master/src/MicroBootstrap/icon.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/mehdihadeli/MicroBootstrap</PackageProjectUrl>
+    <PackageTags>.Net;.Net Core; Coilerplate; Application Framework; Web Framework; Framework; Domain Driven Design; Microservices; CQRS; RabbitMQ; Microservices Framework; Clean Architecture</PackageTags>
+    <PackageReleaseNotes>See https://github.com/mehdihadeli/MicroBootstrap/blob/master/README.md for details</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
