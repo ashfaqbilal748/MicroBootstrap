@@ -41,7 +41,7 @@
     <PackageLicenseExpression></PackageLicenseExpression>
     <PackageIconUrl>https://github.com/mehdihadeli/MicroBootstrap/blob/master/src/MicroBootstrap/icon.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/mehdihadeli/MicroBootstrap</PackageProjectUrl>
-    <PackageTags>'.net;c#;dotnet;dotnetcore;aspnetcore; boilerplate; application-framework; web-framework; framework;webapi; domain-driven-design;architecture;microservices;cqrs; rabbitmQ; microservices-framework; clean-architecture;docker;kubernetes;</PackageTags>
+    <PackageTags>.net;c#;dotnet;dotnetcore;aspnetcore; boilerplate; application-framework; web-framework; framework;webapi; domain-driven-design;architecture;microservices;cqrs; rabbitmQ; microservices-framework; clean-architecture;docker;kubernetes;</PackageTags>
     <PackageReleaseNotes>See https://github.com/mehdihadeli/MicroBootstrap/blob/master/README.md for details</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
