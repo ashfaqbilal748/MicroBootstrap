@@ -3,13 +3,15 @@
    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <ExcludeGeneratedDebugSymbol>False</ExcludeGeneratedDebugSymbol>
+    <AssemblyName>MicroBootstrap</AssemblyName>
     <Summary>MicroBootstrap is a framework for quickly and conveniently creating microservices on .NET Core.</Summary>
     <Description>MicroBootstrap is a framework for quickly and conveniently creating microservices on .NET Core.</Description>
     <PackageId>MicroBootstrap</PackageId>
-    <PackageIcon>icon.png</PackageIcon>
+    <Icon>https://github.com/mehdihadeli/MicroBootstrap/tree/master/src/MicroBootstrap/icon.png?raw=true</Icon>
     <PackageProjectUrl>https://github.com/mehdihadeli/MicroBootstrap</PackageProjectUrl>
     <MinVerTagPrefix>v</MinVerTagPrefix>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>.net;.net core;boilerplate;application framework;web framework;framework;domain driven design;microservices;cqrs;rabbitmq;microservices framework;clean architecture</PackageTags>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <Deterministic>true</Deterministic>
