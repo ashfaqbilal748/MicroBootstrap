@@ -1,5 +1,6 @@
 # MicroBootstrap
-MicroBootstrap is a framework for quickly creating microservices on .NET Core
+
+MicroBootstrap is a framework for quickly and conveniently creating microservices on .NET Core.
 
 |Branch             |Status                                                  
 |-------------------|-----------------------------------------------------
