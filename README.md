@@ -10,7 +10,14 @@ MicroBootstrap is a framework for quickly creating microservices on .NET Core
  
 In [samples](https://github.com/mehdihadeli/MicroBootstrap/tree/master/samples) folder I've put some microservices sample that used this infrastructure for better understanding.
 
-**Thecnologies**
+## How to use?
+For using [this package](https://www.nuget.org/packages/MicroBootstrap/) you can easily add it to your microservices project and use its infrastructure in your project to get rid of any annoying configuration and implement infrastructural stuff for microservice purpose. just add this command to add NuGet package:
+
+``` bash
+dotnet add package MicroBootstrap
+```
+
+## Thecnologies
 ----------------
 * .Net Core 3.1
 * RabbitMQ
@@ -31,14 +38,14 @@ In [samples](https://github.com/mehdihadeli/MicroBootstrap/tree/master/samples) 
 * Seq
 * Serilog
 
-**Future Works**
+## Future Works
 ----------------
 -  [ ] Integration with Service Mesh and Istio
 -  [ ] Integration with Marten and Event Sourcing
 -  [ ] Integration with MediateR
 -  [ ] Integration with Kafka
 
-**CI/CD**
+## CI/CD
 ----------------
  
  ![CI/CD](https://github.com/mehdihadeli/MicroBootstrap/blob/master/samples/Game-Microservices-Sample/ci-cd.png?raw=true)
