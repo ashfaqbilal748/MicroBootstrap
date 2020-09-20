@@ -18,7 +18,7 @@ For using [this package](https://www.nuget.org/packages/MicroBootstrap/) you can
 dotnet add package MicroBootstrap
 ```
 
-## Thecnologies
+## Thecnologies & Stack
 ----------------
 * .Net Core 3.1
 * RabbitMQ
@@ -46,7 +46,14 @@ dotnet add package MicroBootstrap
 -  [ ] Integration with MediateR
 -  [ ] Integration with Kafka
 
-## CI/CD
+## 🤝 Contributing
 ----------------
- 
- ![CI/CD](https://github.com/mehdihadeli/MicroBootstrap/blob/master/samples/Game-Microservices-Sample/ci-cd.png?raw=true)
+1. Fork it ( https://github.com/mehdihadeli/MicroBootstrap/fork )
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create a new Pull Request 
+
+## Show your support
+----------------
+Please ⭐️ this repository if this project helped you!
